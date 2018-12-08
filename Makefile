@@ -30,17 +30,20 @@ build: build-client build-runtime
 
 build-runtime:
 	mkdir -p $(BINDIR)
-	GOARCH=$(RUNTIME_ARCH) GOOS=$(RUNTIME_PLATFORM) $(XBUILD) -o $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) ./cmd/$(MIXIN)
+	GOARCH=$(RUNTIME_ARCH) GOOS=$(RUNTIME_PLATFORM) go build -o $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) ./cmd/$(MIXIN)
 
 build-client:
 	mkdir -p $(BINDIR)
 	go build -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
 
-build-all: build-runtime $(addprefix build-for-,$(SUPPORTED_CLIENT_PLATFORMS))
+build-all: xbuild-runtime $(addprefix build-for-,$(SUPPORTED_CLIENT_PLATFORMS))
 	cp $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) $(BINDIR)/$(VERSION)
 
 build-for-%:
 	$(MAKE) CLIENT_PLATFORM=$* xbuild-client
+
+xbuild-runtime:
+	GOARCH=$(RUNTIME_ARCH) GOOS=$(RUNTIME_PLATFORM) $(XBUILD) -o $(BINDIR)/$(VERSION)/$(MIXIN)-runtime-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT) ./cmd/$(MIXIN)
 
 xbuild-client: $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
 $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT):
