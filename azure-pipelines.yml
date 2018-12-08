@@ -10,7 +10,7 @@ variables:
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
   GOROOT: '/usr/local/go1.11' # Go installation path
   GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
-  modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
+  modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's cod
 
 steps:
 - task: Docker@1
@@ -31,6 +31,6 @@ steps:
   displayName: 'Set up the Go workspace'
 
 - script: |
-     make build test-unit
+    make build test
   workingDirectory: '$(modulePath)'
   displayName: 'Unit Test'
