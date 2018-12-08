@@ -2,7 +2,7 @@ MIXIN = helm
 PKG = github.com/deislabs/porter-$(MIXIN)
 
 COMMIT ?= $(shell git rev-parse --short HEAD)
-VERSION ?= $(shell git describe --tags --dirty='+dev' --abbrev=0 &> /dev/null || echo v0)
+VERSION ?= $(shell git describe --tags --dirty='+dev' --abbrev=0 2> /dev/null || echo v0)
 PERMALINK ?= $(shell git name-rev --name-only --tags --no-undefined HEAD &> /dev/null && echo latest || echo canary)
 
 LDFLAGS = -w -X $(PKG)/pkg.Version=$(VERSION) -X $(PKG)/pkg.Commit=$(COMMIT)
@@ -37,16 +37,15 @@ build-client:
 	go build -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
 
 build-all: build-runtime $(addprefix build-for-,$(SUPPORTED_CLIENT_PLATFORMS))
+	cp $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) $(BINDIR)/$(VERSION)
 
 build-for-%:
 	$(MAKE) CLIENT_PLATFORM=$* xbuild-client
-	cp $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) $(BINDIR)/$(VERSION)
 
 xbuild-client: $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
 $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT):
 	mkdir -p $(dir $@)
 	$(XBUILD) -o $@ ./cmd/$(MIXIN)
-
 
 test: test-unit
 
