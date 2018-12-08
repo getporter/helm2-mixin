@@ -3,7 +3,7 @@ package helm
 import (
 	"fmt"
 
-	"github.com/deislabs/porter/pkg"
+	"github.com/deislabs/porter-helm/pkg"
 )
 
 func (m *Mixin) PrintVersion() {
