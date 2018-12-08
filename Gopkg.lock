@@ -11,12 +11,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:988cba32b4484dc1bf2a442e7cc48f3e3b4c2e752c9dbff7c5fa376b9f79de4d"
+  digest = "1:75c0d8305ae7babc64a4624cdd3c6ba46484d80a245d46f945cfb5eb5020fb08"
   name = "github.com/deislabs/porter"
   packages = [
     "pkg",
     "pkg/context",
-    "pkg/kubernetes",
     "pkg/test",
   ]
   pruneopts = "NUT"
@@ -518,7 +517,6 @@
   input-imports = [
     "github.com/deislabs/porter/pkg",
     "github.com/deislabs/porter/pkg/context",
-    "github.com/deislabs/porter/pkg/kubernetes",
     "github.com/deislabs/porter/pkg/test",
     "github.com/pkg/errors",
     "github.com/spf13/cobra",
@@ -529,6 +527,7 @@
     "k8s.io/apimachinery/pkg/apis/meta/v1",
     "k8s.io/client-go/kubernetes",
     "k8s.io/client-go/kubernetes/fake",
+    "k8s.io/client-go/tools/clientcmd",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

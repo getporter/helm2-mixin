@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"io/ioutil"
 
+	"github.com/deislabs/porter-helm/pkg/kubernetes"
 	"github.com/deislabs/porter/pkg/context"
-	"github.com/deislabs/porter/pkg/kubernetes"
 	"github.com/pkg/errors"
 	k8s "k8s.io/client-go/kubernetes"
 )
