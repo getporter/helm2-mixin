@@ -55,9 +55,9 @@ test-unit: build
 	go test ./...
 
 publish:
-	cp -R $(BINDIR)/$(VERSION) $(BINDIR)/$(PERMALINK)
-	# AZURE_STORAGE_CONNECTION_STRING will be used for auth in the following command
+	# AZURE_STORAGE_CONNECTION_STRING will be used for auth in the following commands
 	az storage blob upload-batch -d porter/mixins/$(MIXIN)/$(VERSION) -s $(BINDIR)/$(VERSION)
+	az storage blob upload-batch -d porter/mixins/$(MIXIN)/$(PERMALINK) -s $(BINDIR)/$(VERSION)
 
 clean:
 	-rm -fr bin/
