@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/deislabs/porter/pkg"
+	"github.com/deislabs/porter-helm/pkg"
 )
 
 func TestPrintVersion(t *testing.T) {

@@ -37,7 +37,6 @@ build-client:
 	go build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
 
 build-all: xbuild-runtime $(addprefix build-for-,$(SUPPORTED_CLIENT_PLATFORMS))
-	cp $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) $(BINDIR)/$(VERSION)
 
 build-for-%:
 	$(MAKE) CLIENT_PLATFORM=$* xbuild-client
