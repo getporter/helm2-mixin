@@ -36,7 +36,7 @@ steps:
   displayName: 'Unit Test'
 
 - script: |
-    make xbuild-all publish
+    AZURE_STORAGE_CONNECTION_STRING=$(AZURE_STORAGE_CONNECTION_STRING) make xbuild-all publish
   workingDirectory: '$(modulePath)'
   displayName: 'Publish'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
