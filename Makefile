@@ -36,9 +36,9 @@ build-client:
 	mkdir -p $(BINDIR)
 	go build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
 
-build-all: xbuild-runtime $(addprefix build-for-,$(SUPPORTED_CLIENT_PLATFORMS))
+xbuild-all: xbuild-runtime $(addprefix xbuild-for-,$(SUPPORTED_CLIENT_PLATFORMS))
 
-build-for-%:
+xbuild-for-%:
 	$(MAKE) CLIENT_PLATFORM=$* xbuild-client
 
 xbuild-runtime:
