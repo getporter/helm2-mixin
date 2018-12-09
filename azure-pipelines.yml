@@ -34,3 +34,9 @@ steps:
     make build test
   workingDirectory: '$(modulePath)'
   displayName: 'Unit Test'
+
+- script: |
+    make xbuild-all publish
+  workingDirectory: '$(modulePath)'
+  displayName: 'Publish'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))

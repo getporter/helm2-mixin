@@ -56,7 +56,9 @@ test-unit: build
 
 publish:
 	# AZURE_STORAGE_CONNECTION_STRING will be used for auth in the following commands
-	az storage blob upload-batch -d porter/mixins/$(MIXIN)/$(VERSION) -s $(BINDIR)/$(VERSION)
+	if [[ "$(PERMALINK)" == "latest" ]]; then \
+	az storage blob upload-batch -d porter/mixins/$(MIXIN)/$(VERSION) -s $(BINDIR)/$(VERSION); \
+	fi
 	az storage blob upload-batch -d porter/mixins/$(MIXIN)/$(PERMALINK) -s $(BINDIR)/$(VERSION)
 
 clean:
