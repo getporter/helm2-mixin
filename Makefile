@@ -33,9 +33,18 @@ build-runtime:
 	mkdir -p $(BINDIR)
 	GOARCH=$(RUNTIME_ARCH) GOOS=$(RUNTIME_PLATFORM) go build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) ./cmd/$(MIXIN)
 
-build-client:
+build-client: build-templates
 	mkdir -p $(BINDIR)
 	go build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
+
+build-templates: get-deps
+	cd pkg/helm && packr2 build
+
+HAS_PACKR2 := $(shell command -v packr2)
+get-deps:
+ifndef HAS_PACKR2
+	go get -u github.com/gobuffalo/packr/v2/packr2
+endif
 
 xbuild-all: xbuild-runtime $(addprefix xbuild-for-,$(SUPPORTED_CLIENT_PLATFORMS))
 
