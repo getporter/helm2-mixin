@@ -10,10 +10,10 @@ import (
 )
 
 var _ = func() error {
-	const gk = "0642184c5beeead54427e1fe43a3f941"
+	const gk = "e8b612f3d3cebcbb08d7e57bbe5a8784"
 	g := packr.New(gk, "")
 	hgr, err := resolver.NewHexGzip(map[string]string{
-		"ceb28a170ec6b83313fa217d1e4bffdf": "1f8b08000000000000ff8cce4b0ec2300c04d07d4e61cdba27e829b882692d300a49e40c0b847a7754f151965d8e3d4f9a571281974ecd19b3ec51047c36c32ca8e79b2dc4f4b9b6a8cd826efddf1441d1bb0d79d09de1e582ef639b7e62b96af010490384aeabd36bd17c1a87301e96f6ee96de010000ffff59af4438cd000000",
+		"d9a4c1f2321237a9e233807ce352b839": "1f8b08000000000000ff8cce4b0ec2300c04d07d4e61cdba27e829b882692d300a49e40c0b847a7754f151965d8e3d4f9a571281974ecd19b3ec51047c36c32ca8e79b2dc4f4b9b6a8cd826efddf1441d1bb0d79d09de1e582ef639b7e62b96af010490384aeabd36bd17c1a87301e96f6ee96de010000ffff59af4438cd000000",
 	})
 	if err != nil {
 		panic(err)
@@ -22,7 +22,7 @@ var _ = func() error {
 
 	func() {
 		b := packr.New("schema", "./schema")
-		b.SetResolver("mixin.json", packr.Pointer{ForwardBox: gk, ForwardPath: "ceb28a170ec6b83313fa217d1e4bffdf"})
+		b.SetResolver("mixin.json", packr.Pointer{ForwardBox: gk, ForwardPath: "d9a4c1f2321237a9e233807ce352b839"})
 	}()
 
 	return nil
