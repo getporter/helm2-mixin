@@ -29,6 +29,7 @@ type InstallArguments struct {
 	Replace   bool              `yaml:"replace"`
 	Set       map[string]string `yaml:"set"`
 	Values    []string          `yaml:"values"`
+	Wait      bool              `yaml:"wait"`
 }
 
 func (m *Mixin) Install() error {
@@ -60,6 +61,10 @@ func (m *Mixin) Install() error {
 
 	if step.Arguments.Replace {
 		cmd.Args = append(cmd.Args, "--replace")
+	}
+
+	if step.Arguments.Wait {
+		cmd.Args = append(cmd.Args, "--wait")
 	}
 
 	for _, v := range step.Arguments.Values {
