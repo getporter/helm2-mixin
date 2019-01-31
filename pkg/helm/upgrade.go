@@ -9,19 +9,15 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type InstallStep struct {
+// UpgradeStep represents the structure of an Upgrade step
+type UpgradeStep struct {
 	Description string           `yaml:"description"`
 	Outputs     []HelmOutput     `yaml:"outputs"`
-	Arguments   InstallArguments `yaml:"helm"`
+	Arguments   UpgradeArguments `yaml:"helm"`
 }
 
-type HelmOutput struct {
-	Name   string `yaml:"name"`
-	Secret string `yaml:"secret"`
-	Key    string `yaml:"key"`
-}
-
-type InstallArguments struct {
+// UpgradeArguments represent the arguments available to the Upgrade step
+type UpgradeArguments struct {
 	Namespace string            `yaml:"namespace"`
 	Name      string            `yaml:"name"`
 	Chart     string            `yaml:"chart"`
@@ -29,10 +25,10 @@ type InstallArguments struct {
 	Replace   bool              `yaml:"replace"`
 	Set       map[string]string `yaml:"set"`
 	Values    []string          `yaml:"values"`
-	Wait      bool              `yaml:"wait"`
 }
 
-func (m *Mixin) Install() error {
+// Upgrade issues a helm upgrade command for a release using the provided UpgradeArguments
+func (m *Mixin) Upgrade() error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
@@ -43,13 +39,13 @@ func (m *Mixin) Install() error {
 		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
-	var step InstallStep
+	var step UpgradeStep
 	err = yaml.Unmarshal(payload, &step)
 	if err != nil {
 		return err
 	}
 
-	cmd := m.NewCommand("helm", "install", "--name", step.Arguments.Name, step.Arguments.Chart)
+	cmd := m.NewCommand("helm", "upgrade", step.Arguments.Name, step.Arguments.Chart)
 
 	if step.Arguments.Namespace != "" {
 		cmd.Args = append(cmd.Args, "--namespace", step.Arguments.Namespace)
@@ -61,10 +57,6 @@ func (m *Mixin) Install() error {
 
 	if step.Arguments.Replace {
 		cmd.Args = append(cmd.Args, "--replace")
-	}
-
-	if step.Arguments.Wait {
-		cmd.Args = append(cmd.Args, "--wait")
 	}
 
 	for _, v := range step.Arguments.Values {
