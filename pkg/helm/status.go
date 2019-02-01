@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"gopkg.in/yaml.v2"
+
+	"github.com/deislabs/porter/pkg/printer"
 )
 
 // StatusStep represents the structure of an Status action
@@ -19,7 +21,7 @@ type StatusArguments struct {
 }
 
 // Status reports the status for a provided set of Helm releases
-func (m *Mixin) Status() error {
+func (m *Mixin) Status(opts printer.PrintOptions) error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
@@ -31,22 +33,32 @@ func (m *Mixin) Status() error {
 		return err
 	}
 
-	cmd := m.NewCommand("helm", "status")
+	format := ""
+	switch opts.Format {
+	case printer.FormatRaw:
+		// default output is raw
+	case printer.FormatYaml:
+		format = `-o yaml`
+	case printer.FormatJson:
+		format = `-o json`
+	default:
+		return fmt.Errorf("invalid format: %s", opts.Format)
+	}
 
 	for _, release := range step.Arguments.Releases {
-		statusCmd := cmd
-		statusCmd.Args = append(statusCmd.Args, release)
-		statusCmd.Stdout = m.Out
-		statusCmd.Stderr = m.Err
+		cmd := m.NewCommand("helm", "status", strings.TrimSpace(fmt.Sprintf(`%s %s`, release, format)))
 
-		prettyCmd := fmt.Sprintf("%s %s", statusCmd.Path, strings.Join(statusCmd.Args, " "))
+		cmd.Stdout = m.Out
+		cmd.Stderr = m.Err
+
+		prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
 		fmt.Fprintln(m.Out, prettyCmd)
 
-		err = statusCmd.Start()
+		err = cmd.Start()
 		if err != nil {
 			return fmt.Errorf("could not execute command, %s: %s", prettyCmd, err)
 		}
-		err = statusCmd.Wait()
+		err = cmd.Wait()
 		if err != nil {
 			return err
 		}
