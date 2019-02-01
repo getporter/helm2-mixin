@@ -18,13 +18,15 @@ type UpgradeStep struct {
 
 // UpgradeArguments represent the arguments available to the Upgrade step
 type UpgradeArguments struct {
-	Namespace string            `yaml:"namespace"`
-	Name      string            `yaml:"name"`
-	Chart     string            `yaml:"chart"`
-	Version   string            `yaml:"version"`
-	Replace   bool              `yaml:"replace"`
-	Set       map[string]string `yaml:"set"`
-	Values    []string          `yaml:"values"`
+	Namespace   string            `yaml:"namespace"`
+	Name        string            `yaml:"name"`
+	Chart       string            `yaml:"chart"`
+	Version     string            `yaml:"version"`
+	Set         map[string]string `yaml:"set"`
+	Values      []string          `yaml:"values"`
+	Wait        bool              `yaml:"wait"`
+	ResetValues bool              `yaml:"resetValues"`
+	ReuseValues bool              `yaml:"reuseValues"`
 }
 
 // Upgrade issues a helm upgrade command for a release using the provided UpgradeArguments
@@ -55,8 +57,16 @@ func (m *Mixin) Upgrade() error {
 		cmd.Args = append(cmd.Args, "--version", step.Arguments.Version)
 	}
 
-	if step.Arguments.Replace {
-		cmd.Args = append(cmd.Args, "--replace")
+	if step.Arguments.ResetValues {
+		cmd.Args = append(cmd.Args, "--reset-values")
+	}
+
+	if step.Arguments.ReuseValues {
+		cmd.Args = append(cmd.Args, "--reuse-values")
+	}
+
+	if step.Arguments.Wait {
+		cmd.Args = append(cmd.Args, "--wait")
 	}
 
 	for _, v := range step.Arguments.Values {

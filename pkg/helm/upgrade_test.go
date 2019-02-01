@@ -2,6 +2,7 @@ package helm
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"testing"
 
@@ -10,33 +11,98 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func TestMixin_Upgrade(t *testing.T) {
-	os.Setenv(test.ExpectedCommandEnv, `helm upgrade MYRELEASE MYCHART --namespace MYNAMESPACE --version 1.0.0 --replace --values /tmp/val1.yaml --values /tmp/val2.yaml --set baz=qux --set foo=bar`)
-	defer os.Unsetenv(test.ExpectedCommandEnv)
+type UpgradeTest struct {
+	expectedCommand string
+	upgradeStep     UpgradeStep
+}
 
-	step := UpgradeStep{
-		Arguments: UpgradeArguments{
-			Namespace: "MYNAMESPACE",
-			Name:      "MYRELEASE",
-			Chart:     "MYCHART",
-			Version:   "1.0.0",
-			Replace:   true,
-			Set: map[string]string{
-				"foo": "bar",
-				"baz": "qux",
+func TestMixin_Upgrade(t *testing.T) {
+	namespace := "MYNAMESPACE"
+	name := "MYRELEASE"
+	chart := "MYCHART"
+	version := "1.0.0"
+	setArgs := map[string]string{
+		"foo": "bar",
+		"baz": "qux",
+	}
+	values := []string{
+		"/tmp/val1.yaml",
+		"/tmp/val2.yaml",
+	}
+
+	baseUpgrade := fmt.Sprintf(`helm upgrade %s %s --namespace %s --version %s`, name, chart, namespace, version)
+	baseValues := `--values /tmp/val1.yaml --values /tmp/val2.yaml`
+	baseSetArgs := `--set baz=qux --set foo=bar`
+
+	upgradeTests := []UpgradeTest{
+		UpgradeTest{
+			expectedCommand: fmt.Sprintf(`%s %s %s`, baseUpgrade, baseValues, baseSetArgs),
+			upgradeStep: UpgradeStep{
+				Arguments: UpgradeArguments{
+					Namespace: namespace,
+					Name:      name,
+					Chart:     chart,
+					Version:   version,
+					Set:       setArgs,
+					Values:    values,
+				},
 			},
-			Values: []string{
-				"/tmp/val1.yaml",
-				"/tmp/val2.yaml",
+		},
+		UpgradeTest{
+			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reset-values`, baseValues, baseSetArgs),
+			upgradeStep: UpgradeStep{
+				Arguments: UpgradeArguments{
+					Namespace:   namespace,
+					Name:        name,
+					Chart:       chart,
+					Version:     version,
+					Set:         setArgs,
+					Values:      values,
+					ResetValues: true,
+				},
+			},
+		},
+		UpgradeTest{
+			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reuse-values`, baseValues, baseSetArgs),
+			upgradeStep: UpgradeStep{
+				Arguments: UpgradeArguments{
+					Namespace:   namespace,
+					Name:        name,
+					Chart:       chart,
+					Version:     version,
+					Set:         setArgs,
+					Values:      values,
+					ReuseValues: true,
+				},
+			},
+		},
+		UpgradeTest{
+			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--wait`, baseValues, baseSetArgs),
+			upgradeStep: UpgradeStep{
+				Arguments: UpgradeArguments{
+					Namespace: namespace,
+					Name:      name,
+					Chart:     chart,
+					Version:   version,
+					Set:       setArgs,
+					Values:    values,
+					Wait:      true,
+				},
 			},
 		},
 	}
-	b, _ := yaml.Marshal(step)
 
-	h := NewTestMixin(t)
-	h.In = bytes.NewReader(b)
+	for _, upgradeTest := range upgradeTests {
+		os.Setenv(test.ExpectedCommandEnv, upgradeTest.expectedCommand)
+		defer os.Unsetenv(test.ExpectedCommandEnv)
 
-	err := h.Upgrade()
+		b, _ := yaml.Marshal(upgradeTest.upgradeStep)
 
-	require.NoError(t, err)
+		h := NewTestMixin(t)
+		h.In = bytes.NewReader(b)
+
+		err := h.Upgrade()
+
+		require.NoError(t, err)
+	}
 }
