@@ -96,12 +96,13 @@ func TestMixin_Upgrade(t *testing.T) {
 		os.Setenv(test.ExpectedCommandEnv, upgradeTest.expectedCommand)
 		defer os.Unsetenv(test.ExpectedCommandEnv)
 
-		b, _ := yaml.Marshal(upgradeTest.upgradeStep)
+		b, err := yaml.Marshal(upgradeTest.upgradeStep)
+		require.NoError(t, err)
 
 		h := NewTestMixin(t)
 		h.In = bytes.NewReader(b)
 
-		err := h.Upgrade()
+		err = h.Upgrade()
 
 		require.NoError(t, err)
 	}
