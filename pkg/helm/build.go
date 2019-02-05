@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-const helmClientVersion = "v2.11.0"
+const helmClientVersion = "v2.12.3"
 const dockerfileLines = `RUN apt-get update && \
  apt-get install -y curl && \
  curl -o helm.tgz https://storage.googleapis.com/kubernetes-helm/helm-%s-linux-amd64.tar.gz && \
