@@ -21,7 +21,7 @@ type statusTest struct {
 func TestMixin_Status(t *testing.T) {
 	testCases := map[string]statusTest{
 		"default": statusTest{
-			format:                printer.FormatRaw,
+			format:                printer.FormatPlaintext,
 			expectedCommandSuffix: "",
 		},
 		"json": statusTest{

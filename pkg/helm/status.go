@@ -35,8 +35,8 @@ func (m *Mixin) Status(opts printer.PrintOptions) error {
 
 	format := ""
 	switch opts.Format {
-	case printer.FormatRaw:
-		// default output is raw
+	case printer.FormatPlaintext:
+		// do nothing, as default output is plaintext
 	case printer.FormatYaml:
 		format = `-o yaml`
 	case printer.FormatJson:

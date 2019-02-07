@@ -24,6 +24,6 @@ func buildStatusCommand(m *helm.Mixin) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVarP(&opts.rawFormat, "output", "o", "raw", "Output format if other than plaintext. Allowed values are: yaml, json")
+	cmd.Flags().StringVarP(&opts.rawFormat, "output", "o", "plaintext", "Output format. Allowed values are: plaintext, yaml, json")
 	return cmd
 }
