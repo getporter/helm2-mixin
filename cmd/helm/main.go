@@ -38,6 +38,7 @@ func buildRootCommand(in io.Reader) *cobra.Command {
 	cmd.AddCommand(buildInstallCommand(m))
 	cmd.AddCommand(buildUninstallCommand(m))
 	cmd.AddCommand(buildUpgradeCommand(m))
+	cmd.AddCommand(buildStatusCommand(m))
 
 	return cmd
 }
