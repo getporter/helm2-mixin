@@ -10,7 +10,7 @@ import (
 	"github.com/deislabs/porter/pkg/printer"
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/require"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 type statusTest struct {
@@ -20,15 +20,15 @@ type statusTest struct {
 
 func TestMixin_Status(t *testing.T) {
 	testCases := map[string]statusTest{
-		"default": statusTest{
+		"default": {
 			format:                printer.FormatPlaintext,
 			expectedCommandSuffix: "",
 		},
-		"json": statusTest{
+		"json": {
 			format:                printer.FormatJson,
 			expectedCommandSuffix: "-o json",
 		},
-		"yaml": statusTest{
+		"yaml": {
 			format:                printer.FormatYaml,
 			expectedCommandSuffix: "-o yaml",
 		},

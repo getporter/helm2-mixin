@@ -7,7 +7,7 @@ import (
 
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/require"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 type UninstallTest struct {
@@ -22,18 +22,18 @@ func TestMixin_Uninstall(t *testing.T) {
 	}
 
 	uninstallTests := []UninstallTest{
-		UninstallTest{
+		{
 			expectedCommand: `helm delete foo bar`,
 			uninstallStep: UninstallStep{
-				Arguments: UninstallArguments{
+				UninstallArguments: UninstallArguments{
 					Releases: releases,
 				},
 			},
 		},
-		UninstallTest{
+		{
 			expectedCommand: `helm delete --purge foo bar`,
 			uninstallStep: UninstallStep{
-				Arguments: UninstallArguments{
+				UninstallArguments: UninstallArguments{
 					Purge:    true,
 					Releases: releases,
 				},
