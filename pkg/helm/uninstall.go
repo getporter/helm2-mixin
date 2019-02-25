@@ -14,7 +14,7 @@ type UninstallStep struct {
 
 // UninstallArguments are the arguments available for the Uninstall action
 type UninstallArguments struct {
-	Step `yaml:,inline`
+	Step `yaml:",inline"`
 
 	Releases []string `yaml:"releases"`
 	Purge    bool     `yaml:"purge"`

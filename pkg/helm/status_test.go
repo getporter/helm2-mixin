@@ -3,12 +3,14 @@ package helm
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
 
 	"github.com/deislabs/porter/pkg/printer"
 	"github.com/deislabs/porter/pkg/test"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -16,6 +18,18 @@ import (
 type statusTest struct {
 	format                printer.Format
 	expectedCommandSuffix string
+}
+
+func TestMixin_UnmarshalStatusStep(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/status-input.yaml")
+	require.NoError(t, err)
+
+	var step StatusStep
+	err = yaml.Unmarshal(b, &step)
+	require.NoError(t, err)
+
+	assert.Equal(t, "Status MySQL", step.Description)
+	assert.Equal(t, []string{"porter-ci-mysql"}, step.Releases)
 }
 
 func TestMixin_Status(t *testing.T) {

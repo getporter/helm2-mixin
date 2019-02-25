@@ -14,7 +14,7 @@ type InstallStep struct {
 }
 
 type InstallArguments struct {
-	Step `yaml:,inline`
+	Step `yaml:",inline"`
 
 	Namespace string            `yaml:"namespace"`
 	Name      string            `yaml:"name"`

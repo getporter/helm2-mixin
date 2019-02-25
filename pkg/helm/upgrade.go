@@ -16,7 +16,7 @@ type UpgradeStep struct {
 
 // UpgradeArguments represent the arguments available to the Upgrade step
 type UpgradeArguments struct {
-	Step `yaml:,inline`
+	Step `yaml:",inline"`
 
 	Namespace   string            `yaml:"namespace"`
 	Name        string            `yaml:"name"`
