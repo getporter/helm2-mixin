@@ -39,27 +39,29 @@ func TestMixin_Status(t *testing.T) {
 		"bar",
 	}
 
-	for _, testCase := range testCases {
+	defer os.Unsetenv(test.ExpectedCommandEnv)
+	for testName, testCase := range testCases {
 		for _, release := range releases {
-			os.Setenv(test.ExpectedCommandEnv,
-				strings.TrimSpace(fmt.Sprintf(`helm status %s %s`, release, testCase.expectedCommandSuffix)))
-			defer os.Unsetenv(test.ExpectedCommandEnv)
+			t.Run(testName, func(t *testing.T) {
+				os.Setenv(test.ExpectedCommandEnv,
+					strings.TrimSpace(fmt.Sprintf(`helm status %s %s`, release, testCase.expectedCommandSuffix)))
 
-			statusStep := StatusStep{
-				Arguments: StatusArguments{
-					Releases: []string{release},
-				},
-			}
+				statusStep := StatusStep{
+					StatusArguments: StatusArguments{
+						Releases: []string{release},
+					},
+				}
 
-			b, _ := yaml.Marshal(statusStep)
+				b, _ := yaml.Marshal(statusStep)
 
-			h := NewTestMixin(t)
-			h.In = bytes.NewReader(b)
+				h := NewTestMixin(t)
+				h.In = bytes.NewReader(b)
 
-			opts := printer.PrintOptions{testCase.format}
-			err := h.Status(opts)
+				opts := printer.PrintOptions{testCase.format}
+				err := h.Status(opts)
 
-			require.NoError(t, err)
+				require.NoError(t, err)
+			})
 		}
 	}
 }

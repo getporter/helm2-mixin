@@ -83,17 +83,19 @@ func TestMixin_Install(t *testing.T) {
 		},
 	}
 
+	defer os.Unsetenv(test.ExpectedCommandEnv)
 	for _, installTest := range installTests {
-		os.Setenv(test.ExpectedCommandEnv, installTest.expectedCommand)
-		defer os.Unsetenv(test.ExpectedCommandEnv)
+		t.Run(installTest.expectedCommand, func(t *testing.T) {
+			os.Setenv(test.ExpectedCommandEnv, installTest.expectedCommand)
 
-		b, _ := yaml.Marshal(installTest.installStep)
+			b, _ := yaml.Marshal(installTest.installStep)
 
-		h := NewTestMixin(t)
-		h.In = bytes.NewReader(b)
+			h := NewTestMixin(t)
+			h.In = bytes.NewReader(b)
 
-		err := h.Install()
+			err := h.Install()
 
-		require.NoError(t, err)
+			require.NoError(t, err)
+		})
 	}
 }
