@@ -4,17 +4,18 @@ import (
 	"fmt"
 	"strings"
 
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 // UninstallStep represents the structure of an Uninstall action
 type UninstallStep struct {
-	Description string             `yaml:"description"`
-	Arguments   UninstallArguments `yaml:"helm"`
+	UninstallArguments `yaml:"helm"`
 }
 
 // UninstallArguments are the arguments available for the Uninstall action
 type UninstallArguments struct {
+	Step `yaml:,inline`
+
 	Releases []string `yaml:"releases"`
 	Purge    bool     `yaml:"purge"`
 }
@@ -34,11 +35,11 @@ func (m *Mixin) Uninstall() error {
 
 	cmd := m.NewCommand("helm", "delete")
 
-	if step.Arguments.Purge {
+	if step.Purge {
 		cmd.Args = append(cmd.Args, "--purge")
 	}
 
-	for _, release := range step.Arguments.Releases {
+	for _, release := range step.Releases {
 		cmd.Args = append(cmd.Args, release)
 	}
 

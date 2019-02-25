@@ -8,7 +8,7 @@ import (
 
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/require"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 type UpgradeTest struct {
@@ -35,10 +35,10 @@ func TestMixin_Upgrade(t *testing.T) {
 	baseSetArgs := `--set baz=qux --set foo=bar`
 
 	upgradeTests := []UpgradeTest{
-		UpgradeTest{
+		{
 			expectedCommand: fmt.Sprintf(`%s %s %s`, baseUpgrade, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
-				Arguments: UpgradeArguments{
+				UpgradeArguments: UpgradeArguments{
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -48,10 +48,10 @@ func TestMixin_Upgrade(t *testing.T) {
 				},
 			},
 		},
-		UpgradeTest{
+		{
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reset-values`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
-				Arguments: UpgradeArguments{
+				UpgradeArguments: UpgradeArguments{
 					Namespace:   namespace,
 					Name:        name,
 					Chart:       chart,
@@ -62,10 +62,10 @@ func TestMixin_Upgrade(t *testing.T) {
 				},
 			},
 		},
-		UpgradeTest{
+		{
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reuse-values`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
-				Arguments: UpgradeArguments{
+				UpgradeArguments: UpgradeArguments{
 					Namespace:   namespace,
 					Name:        name,
 					Chart:       chart,
@@ -76,10 +76,10 @@ func TestMixin_Upgrade(t *testing.T) {
 				},
 			},
 		},
-		UpgradeTest{
+		{
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--wait`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
-				Arguments: UpgradeArguments{
+				UpgradeArguments: UpgradeArguments{
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -92,18 +92,20 @@ func TestMixin_Upgrade(t *testing.T) {
 		},
 	}
 
+	defer os.Unsetenv(test.ExpectedCommandEnv)
 	for _, upgradeTest := range upgradeTests {
-		os.Setenv(test.ExpectedCommandEnv, upgradeTest.expectedCommand)
-		defer os.Unsetenv(test.ExpectedCommandEnv)
+		t.Run(upgradeTest.expectedCommand, func(t *testing.T) {
 
-		b, err := yaml.Marshal(upgradeTest.upgradeStep)
-		require.NoError(t, err)
+			os.Setenv(test.ExpectedCommandEnv, upgradeTest.expectedCommand)
+			b, err := yaml.Marshal(upgradeTest.upgradeStep)
+			require.NoError(t, err)
 
-		h := NewTestMixin(t)
-		h.In = bytes.NewReader(b)
+			h := NewTestMixin(t)
+			h.In = bytes.NewReader(b)
 
-		err = h.Upgrade()
+			err = h.Upgrade()
 
-		require.NoError(t, err)
+			require.NoError(t, err)
+		})
 	}
 }

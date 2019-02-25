@@ -7,7 +7,7 @@ import (
 
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/require"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 type UninstallTest struct {
@@ -22,18 +22,18 @@ func TestMixin_Uninstall(t *testing.T) {
 	}
 
 	uninstallTests := []UninstallTest{
-		UninstallTest{
+		{
 			expectedCommand: `helm delete foo bar`,
 			uninstallStep: UninstallStep{
-				Arguments: UninstallArguments{
+				UninstallArguments: UninstallArguments{
 					Releases: releases,
 				},
 			},
 		},
-		UninstallTest{
+		{
 			expectedCommand: `helm delete --purge foo bar`,
 			uninstallStep: UninstallStep{
-				Arguments: UninstallArguments{
+				UninstallArguments: UninstallArguments{
 					Purge:    true,
 					Releases: releases,
 				},
@@ -41,17 +41,19 @@ func TestMixin_Uninstall(t *testing.T) {
 		},
 	}
 
+	defer os.Unsetenv(test.ExpectedCommandEnv)
 	for _, uninstallTest := range uninstallTests {
-		os.Setenv(test.ExpectedCommandEnv, uninstallTest.expectedCommand)
-		defer os.Unsetenv(test.ExpectedCommandEnv)
+		t.Run(uninstallTest.expectedCommand, func(t *testing.T) {
+			os.Setenv(test.ExpectedCommandEnv, uninstallTest.expectedCommand)
 
-		b, _ := yaml.Marshal(uninstallTest.uninstallStep)
+			b, _ := yaml.Marshal(uninstallTest.uninstallStep)
 
-		h := NewTestMixin(t)
-		h.In = bytes.NewReader(b)
+			h := NewTestMixin(t)
+			h.In = bytes.NewReader(b)
 
-		err := h.Uninstall()
+			err := h.Uninstall()
 
-		require.NoError(t, err)
+			require.NoError(t, err)
+		})
 	}
 }

@@ -4,19 +4,19 @@ import (
 	"fmt"
 	"strings"
 
-	"gopkg.in/yaml.v2"
-
 	"github.com/deislabs/porter/pkg/printer"
+	yaml "gopkg.in/yaml.v2"
 )
 
 // StatusStep represents the structure of an Status action
 type StatusStep struct {
-	Description string          `yaml:"description"`
-	Arguments   StatusArguments `yaml:"helm"`
+	StatusArguments `yaml:"helm"`
 }
 
 // StatusArguments are the arguments available for the Status action
 type StatusArguments struct {
+	Step `yaml:,inline`
+
 	Releases []string `yaml:"releases"`
 }
 
@@ -45,7 +45,7 @@ func (m *Mixin) Status(opts printer.PrintOptions) error {
 		return fmt.Errorf("invalid format: %s", opts.Format)
 	}
 
-	for _, release := range step.Arguments.Releases {
+	for _, release := range step.Releases {
 		cmd := m.NewCommand("helm", "status", strings.TrimSpace(fmt.Sprintf(`%s %s`, release, format)))
 
 		cmd.Stdout = m.Out

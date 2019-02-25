@@ -6,18 +6,18 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 // UpgradeStep represents the structure of an Upgrade step
 type UpgradeStep struct {
-	Description string           `yaml:"description"`
-	Outputs     []HelmOutput     `yaml:"outputs"`
-	Arguments   UpgradeArguments `yaml:"helm"`
+	UpgradeArguments `yaml:"helm"`
 }
 
 // UpgradeArguments represent the arguments available to the Upgrade step
 type UpgradeArguments struct {
+	Step `yaml:,inline`
+
 	Namespace   string            `yaml:"namespace"`
 	Name        string            `yaml:"name"`
 	Chart       string            `yaml:"chart"`
@@ -47,41 +47,41 @@ func (m *Mixin) Upgrade() error {
 		return err
 	}
 
-	cmd := m.NewCommand("helm", "upgrade", step.Arguments.Name, step.Arguments.Chart)
+	cmd := m.NewCommand("helm", "upgrade", step.Name, step.Chart)
 
-	if step.Arguments.Namespace != "" {
-		cmd.Args = append(cmd.Args, "--namespace", step.Arguments.Namespace)
+	if step.Namespace != "" {
+		cmd.Args = append(cmd.Args, "--namespace", step.Namespace)
 	}
 
-	if step.Arguments.Version != "" {
-		cmd.Args = append(cmd.Args, "--version", step.Arguments.Version)
+	if step.Version != "" {
+		cmd.Args = append(cmd.Args, "--version", step.Version)
 	}
 
-	if step.Arguments.ResetValues {
+	if step.ResetValues {
 		cmd.Args = append(cmd.Args, "--reset-values")
 	}
 
-	if step.Arguments.ReuseValues {
+	if step.ReuseValues {
 		cmd.Args = append(cmd.Args, "--reuse-values")
 	}
 
-	if step.Arguments.Wait {
+	if step.Wait {
 		cmd.Args = append(cmd.Args, "--wait")
 	}
 
-	for _, v := range step.Arguments.Values {
+	for _, v := range step.Values {
 		cmd.Args = append(cmd.Args, "--values", v)
 	}
 
 	// sort the set consistently
-	setKeys := make([]string, 0, len(step.Arguments.Set))
-	for k := range step.Arguments.Set {
+	setKeys := make([]string, 0, len(step.Set))
+	for k := range step.Set {
 		setKeys = append(setKeys, k)
 	}
 	sort.Strings(setKeys)
 
 	for _, k := range setKeys {
-		cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%s", k, step.Arguments.Set[k]))
+		cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%s", k, step.Set[k]))
 	}
 
 	cmd.Stdout = m.Out
@@ -101,7 +101,7 @@ func (m *Mixin) Upgrade() error {
 
 	var lines []string
 	for _, output := range step.Outputs {
-		val, err := getSecret(kubeClient, step.Arguments.Namespace, output.Secret, output.Key)
+		val, err := getSecret(kubeClient, step.Namespace, output.Secret, output.Key)
 		if err != nil {
 			return err
 		}

@@ -8,7 +8,7 @@ import (
 
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/require"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 type InstallTest struct {
@@ -40,10 +40,10 @@ func TestMixin_Install(t *testing.T) {
 	baseSetArgs := `--set baz=qux --set foo=bar`
 
 	installTests := []InstallTest{
-		InstallTest{
+		{
 			expectedCommand: fmt.Sprintf(`%s %s %s`, baseInstall, baseValues, baseSetArgs),
 			installStep: InstallStep{
-				Arguments: InstallArguments{
+				InstallArguments: InstallArguments{
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -53,10 +53,10 @@ func TestMixin_Install(t *testing.T) {
 				},
 			},
 		},
-		InstallTest{
+		{
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--replace`, baseValues, baseSetArgs),
 			installStep: InstallStep{
-				Arguments: InstallArguments{
+				InstallArguments: InstallArguments{
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -67,10 +67,10 @@ func TestMixin_Install(t *testing.T) {
 				},
 			},
 		},
-		InstallTest{
+		{
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--wait`, baseValues, baseSetArgs),
 			installStep: InstallStep{
-				Arguments: InstallArguments{
+				InstallArguments: InstallArguments{
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -83,17 +83,19 @@ func TestMixin_Install(t *testing.T) {
 		},
 	}
 
+	defer os.Unsetenv(test.ExpectedCommandEnv)
 	for _, installTest := range installTests {
-		os.Setenv(test.ExpectedCommandEnv, installTest.expectedCommand)
-		defer os.Unsetenv(test.ExpectedCommandEnv)
+		t.Run(installTest.expectedCommand, func(t *testing.T) {
+			os.Setenv(test.ExpectedCommandEnv, installTest.expectedCommand)
 
-		b, _ := yaml.Marshal(installTest.installStep)
+			b, _ := yaml.Marshal(installTest.installStep)
 
-		h := NewTestMixin(t)
-		h.In = bytes.NewReader(b)
+			h := NewTestMixin(t)
+			h.In = bytes.NewReader(b)
 
-		err := h.Install()
+			err := h.Install()
 
-		require.NoError(t, err)
+			require.NoError(t, err)
+		})
 	}
 }
