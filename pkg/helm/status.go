@@ -15,7 +15,7 @@ type StatusStep struct {
 
 // StatusArguments are the arguments available for the Status action
 type StatusArguments struct {
-	Step `yaml:,inline`
+	Step `yaml:",inline"`
 
 	Releases []string `yaml:"releases"`
 }

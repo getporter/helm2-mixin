@@ -3,10 +3,12 @@ package helm
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"testing"
 
 	"github.com/deislabs/porter/pkg/test"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -14,6 +16,27 @@ import (
 type UpgradeTest struct {
 	expectedCommand string
 	upgradeStep     UpgradeStep
+}
+
+func TestMixin_UnmarshalUpgradeStep(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/upgrade-input.yaml")
+	require.NoError(t, err)
+
+	var step UpgradeStep
+	err = yaml.Unmarshal(b, &step)
+	require.NoError(t, err)
+
+	assert.Equal(t, "Upgrade MySQL", step.Description)
+	assert.NotEmpty(t, step.Outputs)
+	assert.Equal(t, HelmOutput{"mysql-root-password", "porter-ci-mysql", "mysql-root-password"}, step.Outputs[0])
+
+	assert.Equal(t, "porter-ci-mysql", step.Name)
+	assert.Equal(t, "stable/mysql", step.Chart)
+	assert.Equal(t, "0.10.2", step.Version)
+	assert.True(t, step.Wait)
+	assert.True(t, step.ResetValues)
+	assert.True(t, step.ResetValues)
+	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser"}, step.Set)
 }
 
 func TestMixin_Upgrade(t *testing.T) {

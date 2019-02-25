@@ -3,10 +3,12 @@ package helm
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"testing"
 
 	"github.com/deislabs/porter/pkg/test"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -19,6 +21,25 @@ type InstallTest struct {
 // sad hack: not sure how to make a common test main for all my subpackages
 func TestMain(m *testing.M) {
 	test.TestMainWithMockedCommandHandlers(m)
+}
+
+func TestMixin_UnmarshalInstallStep(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/install-input.yaml")
+	require.NoError(t, err)
+
+	var step InstallStep
+	err = yaml.Unmarshal(b, &step)
+	require.NoError(t, err)
+
+	assert.Equal(t, "Install MySQL", step.Description)
+	assert.NotEmpty(t, step.Outputs)
+	assert.Equal(t, HelmOutput{"mysql-root-password", "porter-ci-mysql", "mysql-root-password"}, step.Outputs[0])
+
+	assert.Equal(t, "porter-ci-mysql", step.Name)
+	assert.Equal(t, "stable/mysql", step.Chart)
+	assert.Equal(t, "0.10.2", step.Version)
+	assert.Equal(t, true, step.Replace)
+	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser"}, step.Set)
 }
 
 func TestMixin_Install(t *testing.T) {

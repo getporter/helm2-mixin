@@ -2,10 +2,12 @@ package helm
 
 import (
 	"bytes"
+	"io/ioutil"
 	"os"
 	"testing"
 
 	"github.com/deislabs/porter/pkg/test"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -13,6 +15,19 @@ import (
 type UninstallTest struct {
 	expectedCommand string
 	uninstallStep   UninstallStep
+}
+
+func TestMixin_UnmarshalUninstallStep(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/uninstall-input.yaml")
+	require.NoError(t, err)
+
+	var step UninstallStep
+	err = yaml.Unmarshal(b, &step)
+	require.NoError(t, err)
+
+	assert.Equal(t, "Uninstall MySQL", step.Description)
+	assert.Equal(t, []string{"porter-ci-mysql"}, step.Releases)
+	assert.True(t, step.Purge)
 }
 
 func TestMixin_Uninstall(t *testing.T) {
