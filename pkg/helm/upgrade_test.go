@@ -22,9 +22,11 @@ func TestMixin_UnmarshalUpgradeStep(t *testing.T) {
 	b, err := ioutil.ReadFile("testdata/upgrade-input.yaml")
 	require.NoError(t, err)
 
-	var step UpgradeStep
-	err = yaml.Unmarshal(b, &step)
+	var action UpgradeAction
+	err = yaml.Unmarshal(b, &action)
 	require.NoError(t, err)
+	require.Len(t, action.Steps, 1)
+	step := action.Steps[0]
 
 	assert.Equal(t, "Upgrade MySQL", step.Description)
 	assert.NotEmpty(t, step.Outputs)
@@ -120,7 +122,9 @@ func TestMixin_Upgrade(t *testing.T) {
 		t.Run(upgradeTest.expectedCommand, func(t *testing.T) {
 
 			os.Setenv(test.ExpectedCommandEnv, upgradeTest.expectedCommand)
-			b, err := yaml.Marshal(upgradeTest.upgradeStep)
+
+			action := UpgradeAction{Steps: []UpgradeStep{upgradeTest.upgradeStep}}
+			b, err := yaml.Marshal(action)
 			require.NoError(t, err)
 
 			h := NewTestMixin(t)

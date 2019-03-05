@@ -21,9 +21,11 @@ func TestMixin_UnmarshalUninstallStep(t *testing.T) {
 	b, err := ioutil.ReadFile("testdata/uninstall-input.yaml")
 	require.NoError(t, err)
 
-	var step UninstallStep
-	err = yaml.Unmarshal(b, &step)
+	var action UninstallAction
+	err = yaml.Unmarshal(b, &action)
 	require.NoError(t, err)
+	require.Len(t, action.Steps, 1)
+	step := action.Steps[0]
 
 	assert.Equal(t, "Uninstall MySQL", step.Description)
 	assert.Equal(t, []string{"porter-ci-mysql"}, step.Releases)
@@ -61,7 +63,8 @@ func TestMixin_Uninstall(t *testing.T) {
 		t.Run(uninstallTest.expectedCommand, func(t *testing.T) {
 			os.Setenv(test.ExpectedCommandEnv, uninstallTest.expectedCommand)
 
-			b, _ := yaml.Marshal(uninstallTest.uninstallStep)
+			action := UninstallAction{Steps: []UninstallStep{uninstallTest.uninstallStep}}
+			b, _ := yaml.Marshal(action)
 
 			h := NewTestMixin(t)
 			h.In = bytes.NewReader(b)

@@ -4,8 +4,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	yaml "gopkg.in/yaml.v2"
 )
+
+type UninstallAction struct {
+	Steps []UninstallStep `yaml:"uninstall"`
+}
 
 // UninstallStep represents the structure of an Uninstall action
 type UninstallStep struct {
@@ -27,11 +33,15 @@ func (m *Mixin) Uninstall() error {
 		return err
 	}
 
-	var step UninstallStep
-	err = yaml.Unmarshal(payload, &step)
+	var action UninstallAction
+	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
 		return err
 	}
+	if len(action.Steps) != 1 {
+		return errors.Errorf("expected a single step, but got %d", len(action.Steps))
+	}
+	step := action.Steps[0]
 
 	cmd := m.NewCommand("helm", "delete")
 
