@@ -2,6 +2,7 @@ package helm
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -43,6 +44,7 @@ func TestMixin_Uninstall(t *testing.T) {
 			expectedCommand: `helm delete foo bar`,
 			uninstallStep: UninstallStep{
 				UninstallArguments: UninstallArguments{
+					Step:     Step{Description: "Uninstall Foo"},
 					Releases: releases,
 				},
 			},
@@ -51,6 +53,7 @@ func TestMixin_Uninstall(t *testing.T) {
 			expectedCommand: `helm delete --purge foo bar`,
 			uninstallStep: UninstallStep{
 				UninstallArguments: UninstallArguments{
+					Step:     Step{Description: "Uninstall Foo"},
 					Purge:    true,
 					Releases: releases,
 				},
@@ -66,6 +69,8 @@ func TestMixin_Uninstall(t *testing.T) {
 			action := UninstallAction{Steps: []UninstallStep{uninstallTest.uninstallStep}}
 			b, _ := yaml.Marshal(action)
 
+			x := string(b)
+			fmt.Println(x)
 			h := NewTestMixin(t)
 			h.In = bytes.NewReader(b)
 

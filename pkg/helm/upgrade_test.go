@@ -64,6 +64,7 @@ func TestMixin_Upgrade(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s`, baseUpgrade, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
+					Step:      Step{Description: "Upgrade Foo"},
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -77,6 +78,7 @@ func TestMixin_Upgrade(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reset-values`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
+					Step:        Step{Description: "Upgrade Foo"},
 					Namespace:   namespace,
 					Name:        name,
 					Chart:       chart,
@@ -91,6 +93,7 @@ func TestMixin_Upgrade(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reuse-values`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
+					Step:        Step{Description: "Upgrade Foo"},
 					Namespace:   namespace,
 					Name:        name,
 					Chart:       chart,
@@ -105,6 +108,7 @@ func TestMixin_Upgrade(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--wait`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
+					Step:      Step{Description: "Upgrade Foo"},
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,

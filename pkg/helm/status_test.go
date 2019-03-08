@@ -66,6 +66,7 @@ func TestMixin_Status(t *testing.T) {
 					Steps: []StatusStep{
 						{
 							StatusArguments: StatusArguments{
+								Step:     Step{Description: "View status of Foo"},
 								Releases: []string{release},
 							},
 						},

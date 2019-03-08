@@ -67,6 +67,7 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s`, baseInstall, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
+					Step:      Step{Description: "Install Foo"},
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -80,6 +81,7 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--replace`, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
+					Step:      Step{Description: "Install Foo"},
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -94,6 +96,7 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--wait`, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
+					Step:      Step{Description: "Install Foo"},
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,

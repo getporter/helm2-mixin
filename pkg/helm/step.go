@@ -2,7 +2,7 @@ package helm
 
 type Step struct {
 	Description string       `yaml:"description"`
-	Outputs     []HelmOutput `yaml:"outputs"`
+	Outputs     []HelmOutput `yaml:"outputs,omitempty"`
 }
 
 type HelmOutput struct {
