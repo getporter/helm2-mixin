@@ -9,6 +9,10 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+type InstallAction struct {
+	Steps []InstallStep `yaml:"install"`
+}
+
 type InstallStep struct {
 	InstallArguments `yaml:"helm"`
 }
@@ -37,11 +41,15 @@ func (m *Mixin) Install() error {
 		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
-	var step InstallStep
-	err = yaml.Unmarshal(payload, &step)
+	var action InstallAction
+	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
 		return err
 	}
+	if len(action.Steps) != 1 {
+		return errors.Errorf("expected a single step, but got %d", len(action.Steps))
+	}
+	step := action.Steps[0]
 
 	cmd := m.NewCommand("helm", "install", "--name", step.Name, step.Chart)
 

@@ -9,6 +9,10 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+type UpgradeAction struct {
+	Steps []UpgradeStep `yaml:"upgrade"`
+}
+
 // UpgradeStep represents the structure of an Upgrade step
 type UpgradeStep struct {
 	UpgradeArguments `yaml:"helm"`
@@ -41,11 +45,15 @@ func (m *Mixin) Upgrade() error {
 		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
-	var step UpgradeStep
-	err = yaml.Unmarshal(payload, &step)
+	var action UpgradeAction
+	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
 		return err
 	}
+	if len(action.Steps) != 1 {
+		return errors.Errorf("expected a single step, but got %d", len(action.Steps))
+	}
+	step := action.Steps[0]
 
 	cmd := m.NewCommand("helm", "upgrade", step.Name, step.Chart)
 

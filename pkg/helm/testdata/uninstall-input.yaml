@@ -1,5 +1,6 @@
-helm:
-  description: "Uninstall MySQL"
-  purge: true
-  releases:
-  - porter-ci-mysql
+uninstall:
+- helm:
+    description: "Uninstall MySQL"
+    purge: true
+    releases:
+    - porter-ci-mysql

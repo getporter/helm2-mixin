@@ -4,9 +4,15 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/deislabs/porter/pkg/printer"
 	yaml "gopkg.in/yaml.v2"
 )
+
+type StatusAction struct {
+	Steps []StatusStep `yaml:"status"`
+}
 
 // StatusStep represents the structure of an Status action
 type StatusStep struct {
@@ -27,11 +33,15 @@ func (m *Mixin) Status(opts printer.PrintOptions) error {
 		return err
 	}
 
-	var step StatusStep
-	err = yaml.Unmarshal(payload, &step)
+	var action StatusAction
+	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
 		return err
 	}
+	if len(action.Steps) != 1 {
+		return errors.Errorf("expected a single step, but got %d", len(action.Steps))
+	}
+	step := action.Steps[0]
 
 	format := ""
 	switch opts.Format {

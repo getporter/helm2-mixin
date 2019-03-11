@@ -27,9 +27,11 @@ func TestMixin_UnmarshalInstallStep(t *testing.T) {
 	b, err := ioutil.ReadFile("testdata/install-input.yaml")
 	require.NoError(t, err)
 
-	var step InstallStep
-	err = yaml.Unmarshal(b, &step)
+	var action InstallAction
+	err = yaml.Unmarshal(b, &action)
 	require.NoError(t, err)
+	require.Len(t, action.Steps, 1)
+	step := action.Steps[0]
 
 	assert.Equal(t, "Install MySQL", step.Description)
 	assert.NotEmpty(t, step.Outputs)
@@ -65,6 +67,7 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s`, baseInstall, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
+					Step:      Step{Description: "Install Foo"},
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -78,6 +81,7 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--replace`, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
+					Step:      Step{Description: "Install Foo"},
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -92,6 +96,7 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--wait`, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
+					Step:      Step{Description: "Install Foo"},
 					Namespace: namespace,
 					Name:      name,
 					Chart:     chart,
@@ -109,7 +114,8 @@ func TestMixin_Install(t *testing.T) {
 		t.Run(installTest.expectedCommand, func(t *testing.T) {
 			os.Setenv(test.ExpectedCommandEnv, installTest.expectedCommand)
 
-			b, _ := yaml.Marshal(installTest.installStep)
+			action := InstallAction{Steps: []InstallStep{installTest.installStep}}
+			b, _ := yaml.Marshal(action)
 
 			h := NewTestMixin(t)
 			h.In = bytes.NewReader(b)

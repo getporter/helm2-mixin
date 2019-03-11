@@ -31,19 +31,19 @@ REGISTRY ?= $(USER)
 
 build: build-client build-runtime
 
-build-runtime:
+build-runtime: generate
 	mkdir -p $(BINDIR)
 	GOARCH=$(RUNTIME_ARCH) GOOS=$(RUNTIME_PLATFORM) go build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) ./cmd/$(MIXIN)
 
-build-client: build-templates
+build-client: generate
 	mkdir -p $(BINDIR)
 	go build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
 
-build-templates: get-deps
-	cd pkg/helm && packr2 build
+generate: packr2
+	go generate ./...
 
 HAS_PACKR2 := $(shell command -v packr2)
-get-deps:
+packr2:
 ifndef HAS_PACKR2
 	go get -u github.com/gobuffalo/packr/v2/packr2
 endif

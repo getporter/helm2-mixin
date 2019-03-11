@@ -24,9 +24,11 @@ func TestMixin_UnmarshalStatusStep(t *testing.T) {
 	b, err := ioutil.ReadFile("testdata/status-input.yaml")
 	require.NoError(t, err)
 
-	var step StatusStep
-	err = yaml.Unmarshal(b, &step)
+	var action StatusAction
+	err = yaml.Unmarshal(b, &action)
 	require.NoError(t, err)
+	require.Len(t, action.Steps, 1)
+	step := action.Steps[0]
 
 	assert.Equal(t, "Status MySQL", step.Description)
 	assert.Equal(t, []string{"porter-ci-mysql"}, step.Releases)
@@ -60,13 +62,18 @@ func TestMixin_Status(t *testing.T) {
 				os.Setenv(test.ExpectedCommandEnv,
 					strings.TrimSpace(fmt.Sprintf(`helm status %s %s`, release, testCase.expectedCommandSuffix)))
 
-				statusStep := StatusStep{
-					StatusArguments: StatusArguments{
-						Releases: []string{release},
+				statusAction := StatusAction{
+					Steps: []StatusStep{
+						{
+							StatusArguments: StatusArguments{
+								Step:     Step{Description: "View status of Foo"},
+								Releases: []string{release},
+							},
+						},
 					},
 				}
 
-				b, _ := yaml.Marshal(statusStep)
+				b, _ := yaml.Marshal(statusAction)
 
 				h := NewTestMixin(t)
 				h.In = bytes.NewReader(b)
