@@ -29,10 +29,7 @@
               "type": "boolean"
             },
             "set": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
+              "type": "object"
             },
             "values": {
               "type": "array",
@@ -83,10 +80,7 @@
               "default": false
             },
             "set": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
+              "type": "object"
             },
             "values": {
               "type": "array",

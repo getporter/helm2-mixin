@@ -41,7 +41,7 @@ func TestMixin_UnmarshalInstallStep(t *testing.T) {
 	assert.Equal(t, "stable/mysql", step.Chart)
 	assert.Equal(t, "0.10.2", step.Version)
 	assert.Equal(t, true, step.Replace)
-	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser"}, step.Set)
+	assert.Equal(t, map[string]interface{}{"mysqlDatabase": "mydb", "mysqlUser": "myuser"}, step.Set)
 }
 
 func TestMixin_Install(t *testing.T) {
@@ -49,9 +49,11 @@ func TestMixin_Install(t *testing.T) {
 	name := "MYRELEASE"
 	chart := "MYCHART"
 	version := "1.0.0"
-	setArgs := map[string]string{
-		"foo": "bar",
-		"baz": "qux",
+	setArgs := map[string]interface{}{
+		"foo":     "bar",
+		"baz":     "qux",
+		"number":  9,
+		"boolean": true,
 	}
 	values := []string{
 		"/tmp/val1.yaml",
@@ -60,7 +62,7 @@ func TestMixin_Install(t *testing.T) {
 
 	baseInstall := fmt.Sprintf(`helm install --name %s %s --namespace %s --version %s`, name, chart, namespace, version)
 	baseValues := `--values /tmp/val1.yaml --values /tmp/val2.yaml`
-	baseSetArgs := `--set baz=qux --set foo=bar`
+	baseSetArgs := `--set baz=qux --set boolean=true --set foo=bar --set number=9`
 
 	installTests := []InstallTest{
 		{

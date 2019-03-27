@@ -38,7 +38,7 @@ func TestMixin_UnmarshalUpgradeStep(t *testing.T) {
 	assert.True(t, step.Wait)
 	assert.True(t, step.ResetValues)
 	assert.True(t, step.ResetValues)
-	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser"}, step.Set)
+	assert.Equal(t, map[string]interface{}{"mysqlDatabase": "mydb", "mysqlUser": "myuser"}, step.Set)
 }
 
 func TestMixin_Upgrade(t *testing.T) {
@@ -46,9 +46,11 @@ func TestMixin_Upgrade(t *testing.T) {
 	name := "MYRELEASE"
 	chart := "MYCHART"
 	version := "1.0.0"
-	setArgs := map[string]string{
-		"foo": "bar",
-		"baz": "qux",
+	setArgs := map[string]interface{}{
+		"foo":     "bar",
+		"baz":     "qux",
+		"number":  9,
+		"boolean": true,
 	}
 	values := []string{
 		"/tmp/val1.yaml",
@@ -57,7 +59,7 @@ func TestMixin_Upgrade(t *testing.T) {
 
 	baseUpgrade := fmt.Sprintf(`helm upgrade %s %s --namespace %s --version %s`, name, chart, namespace, version)
 	baseValues := `--values /tmp/val1.yaml --values /tmp/val2.yaml`
-	baseSetArgs := `--set baz=qux --set foo=bar`
+	baseSetArgs := `--set baz=qux --set boolean=true --set foo=bar --set number=9`
 
 	upgradeTests := []UpgradeTest{
 		{

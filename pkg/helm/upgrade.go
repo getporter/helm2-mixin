@@ -22,15 +22,15 @@ type UpgradeStep struct {
 type UpgradeArguments struct {
 	Step `yaml:",inline"`
 
-	Namespace   string            `yaml:"namespace"`
-	Name        string            `yaml:"name"`
-	Chart       string            `yaml:"chart"`
-	Version     string            `yaml:"version"`
-	Set         map[string]string `yaml:"set"`
-	Values      []string          `yaml:"values"`
-	Wait        bool              `yaml:"wait"`
-	ResetValues bool              `yaml:"resetValues"`
-	ReuseValues bool              `yaml:"reuseValues"`
+	Namespace   string                 `yaml:"namespace"`
+	Name        string                 `yaml:"name"`
+	Chart       string                 `yaml:"chart"`
+	Version     string                 `yaml:"version"`
+	Set         map[string]interface{} `yaml:"set"`
+	Values      []string               `yaml:"values"`
+	Wait        bool                   `yaml:"wait"`
+	ResetValues bool                   `yaml:"resetValues"`
+	ReuseValues bool                   `yaml:"reuseValues"`
 }
 
 // Upgrade issues a helm upgrade command for a release using the provided UpgradeArguments
@@ -89,7 +89,7 @@ func (m *Mixin) Upgrade() error {
 	sort.Strings(setKeys)
 
 	for _, k := range setKeys {
-		cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%s", k, step.Set[k]))
+		cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%v", k, step.Set[k]))
 	}
 
 	cmd.Stdout = m.Out

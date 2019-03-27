@@ -20,14 +20,14 @@ type InstallStep struct {
 type InstallArguments struct {
 	Step `yaml:",inline"`
 
-	Namespace string            `yaml:"namespace"`
-	Name      string            `yaml:"name"`
-	Chart     string            `yaml:"chart"`
-	Version   string            `yaml:"version"`
-	Replace   bool              `yaml:"replace"`
-	Set       map[string]string `yaml:"set"`
-	Values    []string          `yaml:"values"`
-	Wait      bool              `yaml:"wait"`
+	Namespace string                 `yaml:"namespace"`
+	Name      string                 `yaml:"name"`
+	Chart     string                 `yaml:"chart"`
+	Version   string                 `yaml:"version"`
+	Replace   bool                   `yaml:"replace"`
+	Set       map[string]interface{} `yaml:"set"`
+	Values    []string               `yaml:"values"`
+	Wait      bool                   `yaml:"wait"`
 }
 
 func (m *Mixin) Install() error {
@@ -81,7 +81,7 @@ func (m *Mixin) Install() error {
 	sort.Strings(setKeys)
 
 	for _, k := range setKeys {
-		cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%s", k, step.Set[k]))
+		cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%v", k, step.Set[k]))
 	}
 
 	cmd.Stdout = m.Out
