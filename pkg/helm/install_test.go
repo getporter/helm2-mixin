@@ -41,7 +41,8 @@ func TestMixin_UnmarshalInstallStep(t *testing.T) {
 	assert.Equal(t, "stable/mysql", step.Chart)
 	assert.Equal(t, "0.10.2", step.Version)
 	assert.Equal(t, true, step.Replace)
-	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser"}, step.Set)
+	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser",
+		"livenessProbe.initialDelaySeconds": "30", "persistence.enabled": "true"}, step.Set)
 }
 
 func TestMixin_Install(t *testing.T) {
