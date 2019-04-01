@@ -38,7 +38,8 @@ func TestMixin_UnmarshalUpgradeStep(t *testing.T) {
 	assert.True(t, step.Wait)
 	assert.True(t, step.ResetValues)
 	assert.True(t, step.ResetValues)
-	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser"}, step.Set)
+	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser",
+		"livenessProbe.initialDelaySeconds": "30", "persistence.enabled": "true"}, step.Set)
 }
 
 func TestMixin_Upgrade(t *testing.T) {

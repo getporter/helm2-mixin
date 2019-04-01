@@ -30,9 +30,7 @@
             },
             "set": {
               "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
+              "additionalProperties": true
             },
             "values": {
               "type": "array",
@@ -84,9 +82,7 @@
             },
             "set": {
               "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
+              "additionalProperties": true
             },
             "values": {
               "type": "array",

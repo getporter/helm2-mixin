@@ -8,6 +8,8 @@ install:
     set:
       mysqlDatabase: mydb
       mysqlUser: myuser
+      livenessProbe.initialDelaySeconds: 30
+      persistence.enabled: true
     outputs:
       - name: mysql-root-password
         secret: porter-ci-mysql
