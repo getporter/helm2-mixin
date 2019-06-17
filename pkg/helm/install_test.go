@@ -94,6 +94,21 @@ func TestMixin_Install(t *testing.T) {
 			},
 		},
 		{
+			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--devel`, baseValues, baseSetArgs),
+			installStep: InstallStep{
+				InstallArguments: InstallArguments{
+					Step:      Step{Description: "Install Foo"},
+					Namespace: namespace,
+					Name:      name,
+					Chart:     chart,
+					Version:   version,
+					Set:       setArgs,
+					Values:    values,
+					Devel:     true,
+				},
+			},
+		},
+		{
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--wait`, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{

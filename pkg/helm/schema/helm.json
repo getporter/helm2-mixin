@@ -28,6 +28,9 @@
             "wait": {
               "type": "boolean"
             },
+            "devel": {
+              "type": "boolean"
+            },
             "set": {
               "type": "object",
               "additionalProperties": true
