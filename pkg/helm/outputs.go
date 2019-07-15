@@ -8,17 +8,17 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-func getSecret(client kubernetes.Interface, namespace, name, key string) (string, error) {
+func getSecret(client kubernetes.Interface, namespace, name, key string) ([]byte, error) {
 	if namespace == "" {
 		namespace = "default"
 	}
 	secret, err := client.CoreV1().Secrets(namespace).Get(name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
-		return "", fmt.Errorf("error getting secret %s from namespace %s: %s", name, namespace, err)
+		return nil, fmt.Errorf("error getting secret %s from namespace %s: %s", name, namespace, err)
 	}
 	val, ok := secret.Data[key]
 	if !ok {
-		return "", fmt.Errorf("couldn't find key %s in secret", key)
+		return nil, fmt.Errorf("couldn't find key %s in secret", key)
 	}
-	return string(val), nil
+	return val, nil
 }

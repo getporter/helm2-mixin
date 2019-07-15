@@ -107,16 +107,16 @@ func (m *Mixin) Upgrade() error {
 		return err
 	}
 
-	var lines []string
 	for _, output := range step.Outputs {
 		val, err := getSecret(kubeClient, step.Namespace, output.Secret, output.Key)
 		if err != nil {
 			return err
 		}
-		l := fmt.Sprintf("%s=%s", output.Name, val)
-		lines = append(lines, l)
 
+		err = m.Context.WriteMixinOutputToFile(output.Name, val)
+		if err != nil {
+			return errors.Wrapf(err, "unable to write output '%s'", output.Name)
+		}
 	}
-	m.Context.WriteOutput(lines)
 	return nil
 }
