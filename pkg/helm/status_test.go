@@ -78,7 +78,9 @@ func TestMixin_Status(t *testing.T) {
 				h := NewTestMixin(t)
 				h.In = bytes.NewReader(b)
 
-				opts := printer.PrintOptions{testCase.format}
+				opts := StatusOptions{}
+				opts.Format = testCase.format
+
 				err := h.Status(opts)
 
 				require.NoError(t, err)

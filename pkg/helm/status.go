@@ -10,6 +10,10 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+type StatusOptions struct {
+	printer.PrintOptions
+}
+
 type StatusAction struct {
 	Steps []StatusStep `yaml:"status"`
 }
@@ -27,7 +31,7 @@ type StatusArguments struct {
 }
 
 // Status reports the status for a provided set of Helm releases
-func (m *Mixin) Status(opts printer.PrintOptions) error {
+func (m *Mixin) Status(opts StatusOptions) error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
