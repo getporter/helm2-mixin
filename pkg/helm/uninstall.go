@@ -33,6 +33,11 @@ func (m *Mixin) Uninstall() error {
 		return err
 	}
 
+	err = m.Init()
+	if err != nil {
+		return err
+	}
+
 	var action UninstallAction
 	err = yaml.Unmarshal(payload, &action)
 	if err != nil {

@@ -37,6 +37,11 @@ func (m *Mixin) Status(opts StatusOptions) error {
 		return err
 	}
 
+	err = m.Init()
+	if err != nil {
+		return err
+	}
+
 	var action StatusAction
 	err = yaml.Unmarshal(payload, &action)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/deislabs/porter/pkg/test"
@@ -126,7 +127,8 @@ func TestMixin_Upgrade(t *testing.T) {
 	for _, upgradeTest := range upgradeTests {
 		t.Run(upgradeTest.expectedCommand, func(t *testing.T) {
 
-			os.Setenv(test.ExpectedCommandEnv, upgradeTest.expectedCommand)
+			os.Setenv(test.ExpectedCommandEnv,
+				strings.Join([]string{"helm init --upgrade --wait", upgradeTest.expectedCommand}, "\n"))
 
 			action := UpgradeAction{Steps: []UpgradeStep{upgradeTest.upgradeStep}}
 			b, err := yaml.Marshal(action)

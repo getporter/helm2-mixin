@@ -24,6 +24,10 @@
   name = "github.com/ghodss/yaml"
   version = "v1.0.0"
 
+[[constraint]]
+  name = "github.com/mholt/archiver"
+  version = "3.2"
+
 [prune]
   non-go = true
   go-tests = true

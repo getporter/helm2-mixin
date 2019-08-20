@@ -45,6 +45,11 @@ func (m *Mixin) Upgrade() error {
 		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
+	err = m.Init()
+	if err != nil {
+		return err
+	}
+
 	var action UpgradeAction
 	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
