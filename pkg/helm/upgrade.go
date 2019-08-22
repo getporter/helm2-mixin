@@ -45,11 +45,6 @@ func (m *Mixin) Upgrade() error {
 		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
-	err = m.Init()
-	if err != nil {
-		return err
-	}
-
 	var action UpgradeAction
 	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
@@ -59,6 +54,11 @@ func (m *Mixin) Upgrade() error {
 		return errors.Errorf("expected a single step, but got %d", len(action.Steps))
 	}
 	step := action.Steps[0]
+
+	err = m.Init()
+	if err != nil {
+		return err
+	}
 
 	cmd := m.NewCommand("helm", "upgrade", step.Name, step.Chart)
 

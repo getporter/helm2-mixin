@@ -37,11 +37,6 @@ func (m *Mixin) Status(opts StatusOptions) error {
 		return err
 	}
 
-	err = m.Init()
-	if err != nil {
-		return err
-	}
-
 	var action StatusAction
 	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
@@ -62,6 +57,11 @@ func (m *Mixin) Status(opts StatusOptions) error {
 		format = `-o json`
 	default:
 		return fmt.Errorf("invalid format: %s", opts.Format)
+	}
+
+	err = m.Init()
+	if err != nil {
+		return err
 	}
 
 	for _, release := range step.Releases {

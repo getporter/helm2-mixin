@@ -33,11 +33,6 @@ func (m *Mixin) Uninstall() error {
 		return err
 	}
 
-	err = m.Init()
-	if err != nil {
-		return err
-	}
-
 	var action UninstallAction
 	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
@@ -47,6 +42,11 @@ func (m *Mixin) Uninstall() error {
 		return errors.Errorf("expected a single step, but got %d", len(action.Steps))
 	}
 	step := action.Steps[0]
+
+	err = m.Init()
+	if err != nil {
+		return err
+	}
 
 	cmd := m.NewCommand("helm", "delete")
 

@@ -60,8 +60,7 @@ func TestMixin_Status(t *testing.T) {
 		for _, release := range releases {
 			t.Run(testName, func(t *testing.T) {
 				os.Setenv(test.ExpectedCommandEnv,
-					strings.Join([]string{"helm init --upgrade --wait", 
-						strings.TrimSpace(fmt.Sprintf(`helm status %s %s`, release, testCase.expectedCommandSuffix))}, "\n"))
+					strings.TrimSpace(fmt.Sprintf(`helm status %s %s`, release, testCase.expectedCommandSuffix)))
 
 				statusAction := StatusAction{
 					Steps: []StatusStep{

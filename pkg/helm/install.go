@@ -42,11 +42,6 @@ func (m *Mixin) Install() error {
 		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
-	err = m.Init()
-	if err != nil {
-		return err
-	}
-
 	var action InstallAction
 	err = yaml.Unmarshal(payload, &action)
 	if err != nil {
@@ -56,6 +51,11 @@ func (m *Mixin) Install() error {
 		return errors.Errorf("expected a single step, but got %d", len(action.Steps))
 	}
 	step := action.Steps[0]
+
+	err = m.Init()
+	if err != nil {
+		return err
+	}
 
 	cmd := m.NewCommand("helm", "install", "--name", step.Name, step.Chart)
 

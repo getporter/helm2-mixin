@@ -21,6 +21,7 @@ type Mixin struct {
 	*context.Context
 	schema        *packr.Box
 	ClientFactory kubernetes.ClientFactory
+	TillerIniter
 }
 
 // New helm mixin client, initialized with useful defaults.
@@ -29,6 +30,7 @@ func New() *Mixin {
 		schema:        packr.New("schema", "./schema"),
 		Context:       context.New(),
 		ClientFactory: kubernetes.New(),
+		TillerIniter:  RealTillerIniter{},
 	}
 }
 

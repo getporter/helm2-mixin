@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/deislabs/porter/pkg/test"
@@ -65,8 +64,7 @@ func TestMixin_Uninstall(t *testing.T) {
 	defer os.Unsetenv(test.ExpectedCommandEnv)
 	for _, uninstallTest := range uninstallTests {
 		t.Run(uninstallTest.expectedCommand, func(t *testing.T) {
-			os.Setenv(test.ExpectedCommandEnv,
-				strings.Join([]string{"helm init --upgrade --wait", uninstallTest.expectedCommand}, "\n"))
+			os.Setenv(test.ExpectedCommandEnv, uninstallTest.expectedCommand)
 
 			action := UninstallAction{Steps: []UninstallStep{uninstallTest.uninstallStep}}
 			b, _ := yaml.Marshal(action)
