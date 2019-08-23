@@ -59,6 +59,11 @@ func (m *Mixin) Status(opts StatusOptions) error {
 		return fmt.Errorf("invalid format: %s", opts.Format)
 	}
 
+	err = m.Init()
+	if err != nil {
+		return err
+	}
+
 	for _, release := range step.Releases {
 		cmd := m.NewCommand("helm", "status", strings.TrimSpace(fmt.Sprintf(`%s %s`, release, format)))
 

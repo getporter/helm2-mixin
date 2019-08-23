@@ -55,6 +55,11 @@ func (m *Mixin) Upgrade() error {
 	}
 	step := action.Steps[0]
 
+	err = m.Init()
+	if err != nil {
+		return err
+	}
+
 	cmd := m.NewCommand("helm", "upgrade", step.Name, step.Chart)
 
 	if step.Namespace != "" {

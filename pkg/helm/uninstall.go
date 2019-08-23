@@ -43,6 +43,11 @@ func (m *Mixin) Uninstall() error {
 	}
 	step := action.Steps[0]
 
+	err = m.Init()
+	if err != nil {
+		return err
+	}
+
 	cmd := m.NewCommand("helm", "delete")
 
 	if step.Purge {

@@ -52,6 +52,11 @@ func (m *Mixin) Install() error {
 	}
 	step := action.Steps[0]
 
+	err = m.Init()
+	if err != nil {
+		return err
+	}
+
 	cmd := m.NewCommand("helm", "install", "--name", step.Name, step.Chart)
 
 	if step.Namespace != "" {
