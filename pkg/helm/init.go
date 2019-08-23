@@ -86,10 +86,7 @@ func (r RealTillerIniter) setupTillerRBAC(m *Mixin) error {
 
 	cmd = m.NewCommand("kubectl", "create", "clusterrolebinding", "tiller-deploy",
 		"--clusterrole", "cluster-admin", "--serviceaccount", "kube-system:tiller-deploy")
-	if err != nil {
-		return err
-	}
-	return nil
+	return r.runRBACResourceCmd(m, cmd)
 }
 
 func (r RealTillerIniter) runRBACResourceCmd(m *Mixin, cmd *exec.Cmd) error {

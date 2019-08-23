@@ -9,19 +9,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type FailingTillerVersionGetter struct {
-	MockTillerIniter
-}
-
-func (f FailingTillerVersionGetter) getTillerVersion(m *Mixin) (string, error) {
-	return "", errors.New(tillerNotReadyErr)
-}
-
 func TestMixin_Init_TillerNotReady(t *testing.T) {
 	os.Setenv(test.ExpectedCommandEnv, "helm init --service-account=tiller-deploy --upgrade --wait")
 	h := NewTestMixin(t)
 
-	initer := FailingTillerVersionGetter{MockTillerIniter: MockTillerIniter{}}
+	initer := NewMockTillerIniter()
+	initer.GetTillerVersion = func(m *Mixin) (string, error) {
+		return "", errors.New(tillerNotReadyErr)
+	}
 	h.Mixin.TillerIniter = initer
 
 	err := h.Init()
@@ -32,23 +27,18 @@ func TestMixin_Init_TillerNotReady(t *testing.T) {
 	require.Equal(t, wantOutput, gotOutput)
 }
 
-type FailingRBACSetterUpper struct {
-	MockTillerIniter
-}
-
-func (f FailingRBACSetterUpper) getTillerVersion(m *Mixin) (string, error) {
-	return "", errors.New(tillerNotFoundErr)
-}
-
-func (f FailingRBACSetterUpper) setupTillerRBAC(m *Mixin) error {
-	return errors.New("failed to setup RBAC")
-}
-
 func TestMixin_Init_FailedRBACSetup(t *testing.T) {
 	os.Setenv(test.ExpectedCommandEnv, "helm init --service-account=tiller-deploy --upgrade --wait")
 	h := NewTestMixin(t)
 
-	initer := FailingRBACSetterUpper{MockTillerIniter: MockTillerIniter{}}
+	initer := NewMockTillerIniter()
+	initer.GetTillerVersion = func(m *Mixin) (string, error) {
+		return "", errors.New(tillerNotReadyErr)
+	}
+	initer.SetupTillerRBAC = func(m *Mixin) error {
+		return errors.New("failed to setup RBAC")
+	}
+
 	h.Mixin.TillerIniter = initer
 
 	err := h.Init()
@@ -59,18 +49,13 @@ func TestMixin_Init_FailedRBACSetup(t *testing.T) {
 	require.Equal(t, wantOutput, gotOutput)
 }
 
-type MismatchedTillerVersionGetter struct {
-	MockTillerIniter
-}
-
-func (f MismatchedTillerVersionGetter) getTillerVersion(m *Mixin) (string, error) {
-	return "mismatchedVersion", nil
-}
-
 func TestMixin_Init_MismatchedVersion(t *testing.T) {
 	h := NewTestMixin(t)
 
-	initer := MismatchedTillerVersionGetter{MockTillerIniter: MockTillerIniter{}}
+	initer := NewMockTillerIniter()
+	initer.GetTillerVersion = func(m *Mixin) (string, error) {
+		return "mismatchedVersion", nil
+	}
 	h.Mixin.TillerIniter = initer
 
 	err := h.Init()
@@ -81,22 +66,16 @@ func TestMixin_Init_MismatchedVersion(t *testing.T) {
 	require.Equal(t, wantOutput, gotOutput)
 }
 
-type FailingHelmClientFetcher struct {
-	MockTillerIniter
-}
-
-func (f FailingHelmClientFetcher) getTillerVersion(m *Mixin) (string, error) {
-	return "mismatchedVersion", nil
-}
-
-func (f FailingHelmClientFetcher) installHelmClient(m *Mixin, version string) error {
-	return errors.New("failed to install helm client")
-}
-
 func TestMixin_Init_FailedClientInstall(t *testing.T) {
 	h := NewTestMixin(t)
 
-	initer := FailingHelmClientFetcher{MockTillerIniter: MockTillerIniter{}}
+	initer := NewMockTillerIniter()
+	initer.GetTillerVersion = func(m *Mixin) (string, error) {
+		return "mismatchedVersion", nil
+	}
+	initer.InstallHelmClient = func(m *Mixin, version string) error {
+		return errors.New("failed to install helm client")
+	}
 	h.Mixin.TillerIniter = initer
 
 	err := h.Init()
