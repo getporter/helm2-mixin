@@ -40,10 +40,6 @@ func (m *Mixin) getPayloadData() ([]byte, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "could not read the payload from STDIN")
 	}
-	err = m.ValidatePayload(data)
-	if err != nil {
-		return nil, err
-	}
 	return data, nil
 }
 
