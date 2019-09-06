@@ -1,12 +1,14 @@
 package helm
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"strings"
 
+	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
-
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 type UninstallAction struct {
@@ -48,28 +50,44 @@ func (m *Mixin) Uninstall() error {
 		return err
 	}
 
+	// Delete each release one at a time, because helm stops on first error
+	// This gives us more fine-grained error recovery and handling
+	var result error
+	for _, release := range step.Releases {
+		err = m.delete(release, step.Purge)
+		if err != nil {
+			result = multierror.Append(result, err)
+		}
+	}
+	return result
+}
+
+func (m *Mixin) delete(release string, purge bool) error {
 	cmd := m.NewCommand("helm", "delete")
 
-	if step.Purge {
+	if purge {
 		cmd.Args = append(cmd.Args, "--purge")
 	}
 
-	for _, release := range step.Releases {
-		cmd.Args = append(cmd.Args, release)
-	}
+	cmd.Args = append(cmd.Args, release)
 
-	cmd.Stdout = m.Out
-	cmd.Stderr = m.Err
+	output := &bytes.Buffer{}
+	cmd.Stdout = io.MultiWriter(m.Out, output)
+	cmd.Stderr = io.MultiWriter(m.Err, output)
 
 	prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
 	fmt.Fprintln(m.Out, prettyCmd)
 
-	err = cmd.Start()
+	err := cmd.Start()
 	if err != nil {
 		return fmt.Errorf("could not execute command, %s: %s", prettyCmd, err)
 	}
 	err = cmd.Wait()
 	if err != nil {
+		// Gracefully handle the error being a release not found
+		if strings.Contains(output.String(), fmt.Sprintf(`release: %q not found`, release)) {
+			return nil
+		}
 		return err
 	}
 
