@@ -1,6 +1,6 @@
 [[constraint]]
   name = "github.com/deislabs/porter"
-  branch = "master"
+  version = "v0.14.1-beta.2"
 
 [[constraint]]
   name = "github.com/spf13/cobra"
