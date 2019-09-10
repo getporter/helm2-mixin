@@ -26,16 +26,18 @@
   version = "v1.1.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:8a414fd29b38499ee95f5b374bf64991ea251f7b508e43775c523ef90469fe87"
+  digest = "1:5dbeee38ba124d233693f4d3b0e74fbb6df785bbff42c22bc1b44fb1c338885f"
   name = "github.com/deislabs/porter"
   packages = [
     "pkg/context",
+    "pkg/mixin",
+    "pkg/porter/version",
     "pkg/printer",
     "pkg/test",
   ]
   pruneopts = "NUT"
-  revision = "51221b2438ae7490880982840cc5003a16b8243e"
+  revision = "72dd5df11c28ceb3a0599674556ff728df333118"
+  version = "v0.14.1-beta.2"
 
 [[projects]]
   digest = "1:e54c39e0efe496d1092cf08eaf5109758af22e68d26732683009704db1d0afbe"
@@ -855,6 +857,8 @@
   analyzer-version = 1
   input-imports = [
     "github.com/deislabs/porter/pkg/context",
+    "github.com/deislabs/porter/pkg/mixin",
+    "github.com/deislabs/porter/pkg/porter/version",
     "github.com/deislabs/porter/pkg/printer",
     "github.com/deislabs/porter/pkg/test",
     "github.com/ghodss/yaml",
