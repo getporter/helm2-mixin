@@ -60,7 +60,7 @@ func (m *Mixin) Upgrade() error {
 		return err
 	}
 
-	cmd := m.NewCommand("helm", "upgrade", step.Name, step.Chart)
+	cmd := m.NewCommand("helm", "upgrade", "--install", step.Name, step.Chart)
 
 	if step.Namespace != "" {
 		cmd.Args = append(cmd.Args, "--namespace", step.Namespace)
