@@ -1,5 +1,0 @@
-status:
-- helm:
-    description: "Status MySQL"
-    releases:
-    - porter-ci-mysql
