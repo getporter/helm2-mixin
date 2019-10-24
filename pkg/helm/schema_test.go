@@ -30,11 +30,11 @@ func TestMixin_ValidatePayload(t *testing.T) {
 		error string
 	}{
 		{"install", "testdata/install-input.yaml", true, ""},
-		{"status", "testdata/status-input.yaml", true, ""},
+		{"execute", "testdata/execute-input.yaml", true, ""},
 		{"upgrade", "testdata/upgrade-input.yaml", true, ""},
-		{"uninstall", "testdata/status-input.yaml", true, ""},
+		{"uninstall", "testdata/uninstall-input.yaml", true, ""},
 		{"install.missing-desc", "testdata/bad-install-input.missing-desc.yaml", false, "install.0.helm.description: String length must be greater than or equal to 1"},
-		{"status.missing-releases", "testdata/bad-status-input.missing-releases.yaml", false, "status.0.helm: releases is required"},
+		{"uninstall.missing-releases", "testdata/bad-uninstall-input.missing-releases.yaml", false, "uninstall.0.helm: releases is required"},
 	}
 
 	for _, tc := range testcases {

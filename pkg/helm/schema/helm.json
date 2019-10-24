@@ -117,33 +117,15 @@
         "helm"
       ]
     },
-    "statusStep": {
+    "invokeStep": {
       "type": "object",
       "properties": {
-        "helm": {
-          "type": "object",
-          "properties": {
-            "description": {
-              "$ref": "#/definitions/stepDescription"
-            },
-            "releases": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minItems": 1
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "description",
-            "releases"
-          ]
-        }
+        "helm": {"$ref": "#/definitions/helm"}
       },
       "required": [
         "helm"
-      ]
+      ],
+      "additionalProperties": false
     },
     "uninstallStep": {
       "type": "object",
@@ -199,6 +181,33 @@
         "additionalProperties": false,
         "required": ["name", "secret", "key"]
       }
+    },
+    "helm": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "$ref": "#/definitions/stepDescription"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "flags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["null","boolean","number","string"]
+          }
+        },
+        "outputs": {
+          "$ref": "#/definitions/outputs"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "description"
+      ]
     }
   },
   "type": "object",
@@ -215,12 +224,6 @@
         "$ref": "#/definitions/upgradeStep"
       }
     },
-    "status": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/statusStep"
-      }
-    },
     "uninstall": {
       "type": "array",
       "items": {
@@ -228,5 +231,10 @@
       }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": {
+    "type": "array",
+    "items": {
+      "$ref": "#/definitions/invokeStep"
+    }
+  }
 }
