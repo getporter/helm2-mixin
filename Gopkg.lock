@@ -2,6 +2,21 @@
 
 
 [[projects]]
+  digest = "1:e99fd43007977ad482b09d20828c8c225685f82b9f2aef5a74d8a49bac6ca57a"
+  name = "get.porter.sh/porter"
+  packages = [
+    "pkg/context",
+    "pkg/exec/builder",
+    "pkg/mixin",
+    "pkg/porter/version",
+    "pkg/printer",
+    "pkg/test",
+  ]
+  pruneopts = "NUT"
+  revision = "8f3e429db9a2842ddca2570b1eb559564331a6e0"
+  version = "v0.22.0-beta.1"
+
+[[projects]]
   digest = "1:5d72bbcc9c8667b11c3dc3cbe681c5a6f71e5096744c0bf7726ab5c6425d5dc4"
   name = "github.com/BurntSushi/toml"
   packages = ["."]
@@ -26,12 +41,12 @@
   version = "0.1.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:98012c5c875e178d2c803326167f60e78d84da918b34b5f62301b51061d712e5"
+  digest = "1:2be50a1833782406074378bc2ebae42838a4c31bfd19f40d59ab65ae4604b2fe"
   name = "github.com/andybalholm/brotli"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "ed0fd649404dcdcdae403d0e62b555889ee4e6b9"
+  revision = "b60f0d972eeb79a5fba5fb60f1e0568bc8c97e42"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
@@ -40,21 +55,6 @@
   pruneopts = "NUT"
   revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
   version = "v1.1.1"
-
-[[projects]]
-  digest = "1:c54d409ca84f6c69053941ee8306d9a9c1518938139558adc1e3ad69054b0c3b"
-  name = "github.com/deislabs/porter"
-  packages = [
-    "pkg/context",
-    "pkg/exec/builder",
-    "pkg/mixin",
-    "pkg/porter/version",
-    "pkg/printer",
-    "pkg/test",
-  ]
-  pruneopts = "NUT"
-  revision = "bd404082eb41bc2fd836c15f70497c40ae120309"
-  version = "v0.20.0-beta.1"
 
 [[projects]]
   digest = "1:e54c39e0efe496d1092cf08eaf5109758af22e68d26732683009704db1d0afbe"
@@ -198,17 +198,6 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:8f251d09f52a8920bdba202b0c18a24cafb4f70f94b9afd8d02bf7643cfc99a0"
-  name = "github.com/golang/gddo"
-  packages = [
-    "httputil",
-    "httputil/header",
-  ]
-  pruneopts = "NUT"
-  revision = "287de01127eff824e82d565b37fdaa1118da5a4d"
-
-[[projects]]
-  branch = "master"
   digest = "1:e2b86e41f3d669fc36b50d31d32d22c8ac656c75aa5ea89717ce7177e134ff2a"
   name = "github.com/golang/glog"
   packages = ["."]
@@ -333,7 +322,7 @@
   version = "v1.7.8"
 
 [[projects]]
-  digest = "1:c945670065ca971d9f7d248a1d1565779458200cd36ca7bb0e0830f90a4fef49"
+  digest = "1:a37bb096aed79634ea2391318d83d4b20a360991f55e28ecae2d054f5e0f74f7"
   name = "github.com/klauspost/compress"
   packages = [
     "flate",
@@ -344,16 +333,8 @@
     "zstd/internal/xxhash",
   ]
   pruneopts = "NUT"
-  revision = "53fd0299b54f91f5d91c50ee5f4d5e0393e45eb8"
-  version = "v1.7.5"
-
-[[projects]]
-  digest = "1:7dc14952637aea1ef99bc1d9ad1374ddf0fa10d7b608cf5cb72d3f4fa7e4b579"
-  name = "github.com/klauspost/cpuid"
-  packages = ["."]
-  pruneopts = "NUT"
-  revision = "05a8198c0f5a27739aec358908d7e12c64ce6eb7"
-  version = "v1.2.1"
+  revision = "438db640fd672278e44bb9bec0b979358e7e9c76"
+  version = "v1.9.4"
 
 [[projects]]
   digest = "1:f3f3545a30b934b75ad9cf9c7e9543f84f1d1aee3e534f6d01ab1776fa519fb9"
@@ -388,12 +369,12 @@
   version = "v1.0.1"
 
 [[projects]]
-  digest = "1:bd40604a0759454d577683eaf5a69140724d51883e3ad42fff57783ee9938a11"
+  digest = "1:cf1f57bbcd5fbf827c10aadc4a20e0997c92c8c1f2979dccd9548e6c4e319eca"
   name = "github.com/mholt/archiver"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "33320f6f730664f9896b05b777e53ae4c917f572"
-  version = "v3.2.0"
+  revision = "3bd45bda8a6db94a901d9f39983d3b2298438e43"
+  version = "v3.3.0"
 
 [[projects]]
   digest = "1:2f42fa12d6911c7b7659738758631bec870b7e9b4c6be5444f963cdcfccc191f"
@@ -436,15 +417,15 @@
   version = "v2.0.1"
 
 [[projects]]
-  digest = "1:d2ea04a8e328f2b96e11a5bebb4c8bbf88896ea0101bfa167438ad8b16663a3d"
+  digest = "1:c77a3fac2840698b65541ddc83b02055fbb37d8c6bfee496198c182b94728987"
   name = "github.com/pierrec/lz4"
   packages = [
     ".",
     "internal/xxh32",
   ]
   pruneopts = "NUT"
-  revision = "8ef35db8296124c4969aab929c16c91c3cb2c8a0"
-  version = "v2.2.6"
+  revision = "9085dacd1e1eca033047a5514195779360363ced"
+  version = "2.4.0"
 
 [[projects]]
   digest = "1:5cf3f025cbee5951a4ee961de067c8a89fc95a5adabead774f82822efabab121"
@@ -510,15 +491,15 @@
   version = "v1.0.3"
 
 [[projects]]
-  digest = "1:0331452965d8695c0a5633e0f509012987681a654f388f2ad0c3b2d7f7004b1c"
+  digest = "1:7096df4a9258067bb9ff5da62864a645d38dd94cd3f273ff4ab54d0de548a348"
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
     "require",
   ]
   pruneopts = "NUT"
-  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
-  version = "v1.2.2"
+  revision = "221dbe5ed46703ee255b1da0dec05086f5035f62"
+  version = "v1.4.0"
 
 [[projects]]
   digest = "1:5f252b001e9573efb54ffae53b96bb5bfa4963afec4f35d607121ebb4a4dff81"
@@ -535,11 +516,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f15121220068fb01e71ad08b0fdbd1bfaa926be774e7634e8e332c82134079b0"
+  digest = "1:6dadf98a3dd66127f7a6b0314d9dc4301e496aa5e3095b9f630bf3621c50bd13"
   name = "github.com/xeipuuv/gojsonpointer"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "4e3ac2762d5f479393488629ee9370b50873b3a6"
+  revision = "02993c407bfbf5f6dae44c4f4b1cf6a39b5fc5bb"
 
 [[projects]]
   branch = "master"
@@ -550,12 +531,12 @@
   revision = "bd5ef7bd5415a7ac448318e64f11a24cd21e594b"
 
 [[projects]]
-  digest = "1:5185937abbca299da07bcbeb4e38dfa186c09fbf60042c3d07e0073a0634a78f"
+  digest = "1:edc620626ec0133d5d5077fead99ccff6a63f435a55fbf53cbb40df98a0a853d"
   name = "github.com/xeipuuv/gojsonschema"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "f971f3cd73b2899de6923801c147f075263e0c50"
-  version = "v1.1.0"
+  revision = "82fcdeb203eb6ab2a67d0a623d9c19e5e5a64927"
+  version = "v1.2.0"
 
 [[projects]]
   branch = "master"
@@ -879,24 +860,25 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:03a96603922fc1f6895ae083e1e16d943b55ef0656b56965351bd87e7d90485f"
+  digest = "1:42674e29bf0cf4662d49bd9528e24b9ecc4895b32d0be281f9cf04d3a7671846"
   name = "k8s.io/kube-openapi"
   packages = ["pkg/util/proto"]
   pruneopts = "NUT"
-  revision = "0317810137be915b9cf888946c6e115c1bfac693"
+  revision = "30be4d16710ac61bce31eb28a01054596fe6a9f1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/deislabs/porter/pkg/context",
-    "github.com/deislabs/porter/pkg/exec/builder",
-    "github.com/deislabs/porter/pkg/mixin",
-    "github.com/deislabs/porter/pkg/porter/version",
-    "github.com/deislabs/porter/pkg/printer",
-    "github.com/deislabs/porter/pkg/test",
+    "get.porter.sh/porter/pkg/context",
+    "get.porter.sh/porter/pkg/exec/builder",
+    "get.porter.sh/porter/pkg/mixin",
+    "get.porter.sh/porter/pkg/porter/version",
+    "get.porter.sh/porter/pkg/printer",
+    "get.porter.sh/porter/pkg/test",
     "github.com/ghodss/yaml",
     "github.com/gobuffalo/packr/v2",
+    "github.com/gobuffalo/packr/v2/file/resolver",
     "github.com/hashicorp/go-multierror",
     "github.com/mholt/archiver",
     "github.com/pkg/errors",
