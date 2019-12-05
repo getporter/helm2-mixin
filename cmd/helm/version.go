@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/deislabs/porter-helm/pkg/helm"
-	"github.com/deislabs/porter/pkg/porter/version"
+	"get.porter.sh/mixin/helm/pkg/helm"
+	"get.porter.sh/porter/pkg/porter/version"
 	"github.com/spf13/cobra"
 )
 

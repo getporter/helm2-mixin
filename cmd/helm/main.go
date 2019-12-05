@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/deislabs/porter-helm/pkg/helm"
+	"get.porter.sh/mixin/helm/pkg/helm"
 	"github.com/spf13/cobra"
 )
 
