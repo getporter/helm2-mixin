@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/deislabs/porter/pkg/test"
+	"get.porter.sh/porter/pkg/test"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
 )

@@ -1,9 +1,9 @@
 package helm
 
 import (
-	"github.com/deislabs/porter-helm/pkg"
-	"github.com/deislabs/porter/pkg/mixin"
-	"github.com/deislabs/porter/pkg/porter/version"
+	"get.porter.sh/mixin/helm/pkg"
+	"get.porter.sh/porter/pkg/mixin"
+	"get.porter.sh/porter/pkg/porter/version"
 )
 
 func (m *Mixin) PrintVersion(opts version.Options) error {

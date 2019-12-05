@@ -1,7 +1,7 @@
 package helm
 
 import (
-	"github.com/deislabs/porter/pkg/exec/builder"
+	"get.porter.sh/porter/pkg/exec/builder"
 	"github.com/pkg/errors"
 	yaml "gopkg.in/yaml.v2"
 )
