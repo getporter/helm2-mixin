@@ -30,11 +30,6 @@ Here are the most common Makefile tasks
 * `install` installs the mixin into **~/.porter/mixins**.
 * `test-unit` runs the unit tests.
 * `clean-packr` removes extra packr files that were a side-effect of the build.
-  Normally this is run automatically but if you run into issues with packr and
-  dep, run this command.
-* `dep-ensure` runs dep ensure for you while taking care of packr properly. Use
-  this if your PRs are often failing on `verify-vendor` because of packr. This
-  can be avoided entirely if you use `make build`.
-* `verify-vendor` cleans up packr generated files and verifies that dep's Gopkg.lock 
-   and vendor/ are up-to-date. Use this makefile target instead of running 
-   dep check manually.
+  Normally this is run automatically but if you run into issues with packr,
+  run this command.
+

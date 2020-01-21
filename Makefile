@@ -63,9 +63,6 @@ $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT):
 	mkdir -p $(dir $@)
 	GOOS=$(CLIENT_PLATFORM) GOARCH=$(CLIENT_ARCH) $(XBUILD) -o $@ ./cmd/$(MIXIN)
 
-verify:
-	@echo 'verify does nothing for now but keeping it as a placeholder for a bit'
-
 test: test-unit
 
 test-unit: build
