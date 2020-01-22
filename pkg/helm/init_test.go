@@ -62,7 +62,7 @@ func TestMixin_Init_MismatchedVersion(t *testing.T) {
 	require.NoError(t, err)
 
 	gotOutput := h.TestContext.GetOutput()
-	wantOutput := "Tiller version (mismatchedVersion) does not match client version (v2.14.3); downloading a compatible client.\n"
+	wantOutput := "Tiller version (mismatchedVersion) does not match client version (v2.15.2); downloading a compatible client.\n"
 	require.Equal(t, wantOutput, gotOutput)
 }
 
@@ -82,6 +82,6 @@ func TestMixin_Init_FailedClientInstall(t *testing.T) {
 	require.EqualError(t, err, "unable to install a compatible helm client: failed to install helm client")
 
 	gotOutput := h.TestContext.GetOutput()
-	wantOutput := "Tiller version (mismatchedVersion) does not match client version (v2.14.3); downloading a compatible client.\n"
+	wantOutput := "Tiller version (mismatchedVersion) does not match client version (v2.15.2); downloading a compatible client.\n"
 	require.Equal(t, wantOutput, gotOutput)
 }

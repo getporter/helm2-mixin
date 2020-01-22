@@ -15,7 +15,7 @@ func TestMixin_Build(t *testing.T) {
 
 	wantOutput := `RUN apt-get update && \
  apt-get install -y curl && \
- curl -o helm.tgz https://get.helm.sh/helm-v2.14.3-linux-amd64.tar.gz && \
+ curl -o helm.tgz https://get.helm.sh/helm-v2.15.2-linux-amd64.tar.gz && \
  tar -xzf helm.tgz && \
  mv linux-amd64/helm /usr/local/bin && \
  rm helm.tgz
