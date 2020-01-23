@@ -1,9 +1,9 @@
 mixins:
 - helm
 
-name: porter-helm-mysql
+name: helm-mysql
 version: 0.1.0
-tag: deislabs/porter-helm-mysql-bundle:v0.1.0
+tag: getporter/helm-mysql:v0.1.0
 
 credentials:
 - name: kubeconfig
@@ -15,6 +15,7 @@ parameters:
   default: mydb
 - name: mysql-user
   type: string
+  default: mysql-admin
 - name: namespace
   type: string
   default: ''
@@ -33,6 +34,7 @@ install:
       description: "Install MySQL"
       name: "{{ bundle.parameters.mysql-name }}"
       chart: stable/mysql
+      version: 1.6.2
       namespace: "{{ bundle.parameters.namespace }}"
       replace: true
       set:
@@ -61,6 +63,7 @@ upgrade:
       name: "{{ bundle.parameters.mysql-name }}"
       namespace: "{{ bundle.parameters.namespace }}"
       chart: stable/mysql
+      version: 1.6.2
       outputs:
       - name: mysql-root-password
         secret: "{{ bundle.parameters.mysql-name }}"
