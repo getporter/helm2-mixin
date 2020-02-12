@@ -5,7 +5,7 @@ import (
 )
 
 // These values may be referenced elsewhere (init.go), hence consts
-const helmClientVersion string = "v2.16.1"
+const helmClientVersion string = "v2.15.2"
 const helmArchiveTmpl string = "helm-%s-linux-amd64.tar.gz"
 const helmDownloadURLTmpl string = "https://get.helm.sh/%s"
 
