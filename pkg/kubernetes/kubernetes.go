@@ -6,6 +6,8 @@ import (
 	"github.com/pkg/errors"
 	k8s "k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	// Needed for cluster that require authentication to negotiate a OAuth token
+	_ "k8s.io/client-go/plugin/pkg/client/auth"
 )
 
 // ClientFactory is an interface that knows how to create Kubernetes Clients
