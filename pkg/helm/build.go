@@ -41,14 +41,14 @@ type BuildInput struct {
 // MixinConfig represents configuration that can be set on the helm mixin in porter.yaml
 // mixins:
 // - helm:
-//	repositories:
-//		stable:
-//			url: "https://kubernetes-charts.storage.googleapis.com"
-//			cafile: "path/to/cafile"
-//			certfile: "path/to/certfile"
-//			keyfile: "path/to/keyfile"
-//			username: "username"
-//			password: "password"
+//	  repositories:
+//	    stable:
+//		  url: "https://kubernetes-charts.storage.googleapis.com"
+//		  cafile: "path/to/cafile"
+//		  certfile: "path/to/certfile"
+//		  keyfile: "path/to/keyfile"
+//		  username: "username"
+//		  password: "password"
 type MixinConfig struct {
 	Repositories map[string]Repository
 }
@@ -84,10 +84,10 @@ func (m *Mixin) Build() error {
 	for name, repo := range input.Config.Repositories {
 
 		commandValue, err := GetAddRepositoryCommand(name, repo.URL, repo.Cafile, repo.Certfile, repo.Keyfile, repo.Username, repo.Password)
-		if err != nil {
-			fmt.Fprintf(m.Out, "")
+		if err != nil && m.Debug {
+			fmt.Fprintf(m.Out, err.Error())
 		} else {
-			fmt.Fprintf(m.Out, `RUN %s`, strings.Join(commandValue, " "))
+			fmt.Fprintf(m.Out, strings.Join(commandValue, " "))
 		}
 	}
 
@@ -99,10 +99,10 @@ func GetAddRepositoryCommand(name, url, cafile, certfile, keyfile, username, pas
 	var commandBuilder []string
 
 	if name == "" || url == "" {
-		return commandBuilder, fmt.Errorf("Empty name and url are not accepted")
+		return commandBuilder, fmt.Errorf("\nEmpty name or url are not accepted if you want add a helm repo, please refer to 'https://github.com/deislabs/porter-helm'")
 	}
 
-	commandBuilder = append(commandBuilder, "helm", "repo", "add", name, url)
+	commandBuilder = append(commandBuilder, "\nRUN", "helm", "repo", "add", name, url)
 
 	if certfile != "" && keyfile != "" {
 		commandBuilder = append(commandBuilder, "--cert-file", certfile, "--key-file", keyfile)

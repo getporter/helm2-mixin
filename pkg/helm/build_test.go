@@ -39,7 +39,7 @@ RUN apt-get update && \
 		err = m.Build()
 		require.NoError(t, err, "build failed")
 
-		wantOutput := buildOutput + `RUN helm repo add stable kubernetes-charts --username username --password password`
+		wantOutput := buildOutput + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
 
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)

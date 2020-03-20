@@ -16,14 +16,14 @@ porter mixin install helm
 
 ```yaml
 - helm:
-  repositories:
-      stable:
-          url: "https://kubernetes-charts.storage.googleapis.com"
-          cafile: "path/to/cafile"
-          certfile: "path/to/certfile"
-          keyfile: "path/to/keyfile"
-          username: "username"
-          password: "password"
+      repositories:
+          stable:
+              url: "https://kubernetes-charts.storage.googleapis.com"
+              cafile: "path/to/cafile"
+              certfile: "path/to/certfile"
+              keyfile: "path/to/keyfile"
+              username: "username"
+              password: "password"
 ```
 
 ### Mixin Syntax
