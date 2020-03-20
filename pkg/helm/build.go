@@ -99,7 +99,7 @@ func GetAddRepositoryCommand(name, url, cafile, certfile, keyfile, username, pas
 	var commandBuilder []string
 
 	if url == "" {
-		return commandBuilder, fmt.Errorf("\nRepository url must be supplied")
+		return commandBuilder, fmt.Errorf("Repository url must be supplied")
 	}
 
 	commandBuilder = append(commandBuilder, "\nRUN", "helm", "repo", "add", name, url)
