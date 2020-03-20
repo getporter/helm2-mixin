@@ -1,7 +1,6 @@
 config:
   repositories:
     stable:
-      name: stable
       url: "kubernetes-charts"
       username: "username"
       password: "password"

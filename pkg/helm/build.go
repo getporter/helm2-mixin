@@ -54,7 +54,7 @@ type MixinConfig struct {
 }
 
 type Repository struct {
-	URL      string `yaml:"url"`
+	URL      string `yaml:"url,omitempty"`
 	Cafile   string `yaml:"cafile,omitempty"`
 	Certfile string `yaml:"certfile,omitempty"`
 	Keyfile  string `yaml:"keyfile,omitempty"`
