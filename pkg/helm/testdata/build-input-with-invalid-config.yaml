@@ -1,0 +1,10 @@
+config:
+  repositories:
+    stable:
+      name: stable
+install:
+  - helm:
+      description: "Install MySQL"
+      name: porter-ci-mysql
+      chart: stable/mysql
+      version: 0.10.2

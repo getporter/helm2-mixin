@@ -1,6 +1,8 @@
 package helm
 
 import (
+	"bytes"
+	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,7 +15,7 @@ func TestMixin_Build(t *testing.T) {
 	err := m.Build()
 	require.NoError(t, err)
 
-	wantOutput := `RUN apt-get update && \
+	buildOutput := `RUN apt-get update && \
  apt-get install -y curl && \
  curl -o helm.tgz https://get.helm.sh/helm-v2.15.2-linux-amd64.tar.gz && \
  tar -xzf helm.tgz && \
@@ -26,6 +28,34 @@ RUN apt-get update && \
  mv kubectl /usr/local/bin && \
  chmod a+x /usr/local/bin/kubectl`
 
-	gotOutput := m.TestContext.GetOutput()
-	assert.Equal(t, wantOutput, gotOutput)
+	t.Run("build with a valid config", func(t *testing.T) {
+		b, err := ioutil.ReadFile("testdata/build-input-with-valid-config.yaml")
+		require.NoError(t, err)
+
+		m := NewTestMixin(t)
+		m.Debug = false
+		m.In = bytes.NewReader(b)
+
+		err = m.Build()
+		require.NoError(t, err, "build failed")
+
+		wantOutput := buildOutput + `RUN helm repo add stable kubernetes-charts --username username --password password`
+
+		gotOutput := m.TestContext.GetOutput()
+		assert.Equal(t, wantOutput, gotOutput)
+	})
+
+	t.Run("build with invalid config", func(t *testing.T) {
+		b, err := ioutil.ReadFile("testdata/build-input-with-invalid-config.yaml")
+		require.NoError(t, err)
+
+		m := NewTestMixin(t)
+		m.Debug = false
+		m.In = bytes.NewReader(b)
+
+		err = m.Build()
+		require.NoError(t, err, "build failed")
+		gotOutput := m.TestContext.GetOutput()
+		assert.Equal(t, buildOutput, gotOutput)
+	})
 }
