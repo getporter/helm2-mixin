@@ -85,7 +85,7 @@ func (m *Mixin) Build() error {
 
 		commandValue, err := GetAddRepositoryCommand(name, repo.URL, repo.Cafile, repo.Certfile, repo.Keyfile, repo.Username, repo.Password)
 		if err != nil && m.Debug {
-			fmt.Fprintf(m.Err, err.Error())
+			fmt.Fprintf(m.Err, "DEBUG: addition of repository failed: %s\n", err.Error())
 		} else {
 			fmt.Fprintf(m.Out, strings.Join(commandValue, " "))
 		}
