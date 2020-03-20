@@ -85,7 +85,7 @@ func (m *Mixin) Build() error {
 
 		commandValue, err := GetAddRepositoryCommand(name, repo.URL, repo.Cafile, repo.Certfile, repo.Keyfile, repo.Username, repo.Password)
 		if err != nil && m.Debug {
-			fmt.Fprintf(m.Out, err.Error())
+			fmt.Fprintf(m.Err, err.Error())
 		} else {
 			fmt.Fprintf(m.Out, strings.Join(commandValue, " "))
 		}
@@ -98,8 +98,8 @@ func GetAddRepositoryCommand(name, url, cafile, certfile, keyfile, username, pas
 
 	var commandBuilder []string
 
-	if name == "" || url == "" {
-		return commandBuilder, fmt.Errorf("\nEmpty name or url are not accepted if you want add a helm repo, please refer to 'https://github.com/deislabs/porter-helm'")
+	if url == "" {
+		return commandBuilder, fmt.Errorf("\nRepository url must be supplied")
 	}
 
 	commandBuilder = append(commandBuilder, "\nRUN", "helm", "repo", "add", name, url)
