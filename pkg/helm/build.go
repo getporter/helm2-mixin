@@ -74,7 +74,7 @@ func (m *Mixin) Build() error {
 		return err
 	}
 
-	// Define hlm
+	// Define helm
 	fmt.Fprintf(m.Out, getHelm, helmDownloadURL)
 
 	// Define kubectl
