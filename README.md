@@ -8,8 +8,22 @@ appropriate helm command based on which action it is included within: `install`,
 
 ### Install or Upgrade
 
-```
+```shell
 porter mixin install helm
+```
+
+### Configure mixin repositories
+
+```yaml
+- helm:
+    repositories:
+      stable:
+        url: "https://kubernetes-charts.storage.googleapis.com"
+        cafile: "path/to/cafile"
+        certfile: "path/to/certfile"
+        keyfile: "path/to/keyfile"
+        username: "username"
+        password: "password"
 ```
 
 ### Mixin Syntax
