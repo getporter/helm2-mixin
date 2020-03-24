@@ -63,10 +63,15 @@ $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT):
 	mkdir -p $(dir $@)
 	GOOS=$(CLIENT_PLATFORM) GOARCH=$(CLIENT_ARCH) $(XBUILD) -o $@ ./cmd/$(MIXIN)
 
-test: test-unit
+test: test-unit test-integration
 
-test-unit: build
-	$(GO) test ./...
+test-unit:
+	$(GO) test ./pkg/...
+
+test-integration: xbuild
+	# Test against the cross-built client binary that we will publish
+	cp $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT) $(BINDIR)/$(MIXIN)$(FILE_EXT)
+	$(GO) test -tags=integration ./tests/...
 
 publish: bin/porter$(FILE_EXT)
 	# AZURE_STORAGE_CONNECTION_STRING will be used for auth in the following commands

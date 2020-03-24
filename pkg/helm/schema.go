@@ -16,7 +16,7 @@ func (m *Mixin) PrintSchema() error {
 }
 
 func (m *Mixin) GetSchema() (string, error) {
-	b, err := m.schema.Find("helm.json")
+	b, err := m.schema.Find("schema.json")
 	if err != nil {
 		return "", err
 	}
