@@ -1,5 +1,6 @@
 mixins:
 - helm:
+    version: v2.15.2
     repositories:
       stable:
         url: "https://kubernetes-charts.storage.googleapis.com"

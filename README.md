@@ -12,7 +12,16 @@ appropriate helm command based on which action it is included within: `install`,
 porter mixin install helm
 ```
 
-### Configure mixin repositories
+### Mixin Configuration
+
+helm client version
+
+```yaml
+- helm:
+    version: v2.15.2
+```
+
+Repositories
 
 ```yaml
 - helm:
