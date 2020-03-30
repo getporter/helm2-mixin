@@ -1,0 +1,8 @@
+config:
+  version: v2.16.1
+install:
+  - helm:
+      description: "Install MySQL"
+      name: porter-ci-mysql
+      chart: stable/mysql
+      version: 0.10.2

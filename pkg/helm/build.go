@@ -9,7 +9,9 @@ import (
 )
 
 // These values may be referenced elsewhere (init.go), hence consts
-const helmClientVersion string = "v2.15.2"
+var helmClientVersion string
+
+const helmDefaultClientVersion string = "v2.15.2"
 const helmArchiveTmpl string = "helm-%s-linux-amd64.tar.gz"
 const helmDownloadURLTmpl string = "https://get.helm.sh/%s"
 
@@ -21,9 +23,6 @@ const getHelm string = `RUN apt-get update && \
  rm helm.tgz
 RUN helm init --client-only
 `
-
-var helmArchiveVersion = fmt.Sprintf(helmArchiveTmpl, helmClientVersion)
-var helmDownloadURL = fmt.Sprintf(helmDownloadURLTmpl, helmArchiveVersion)
 
 // kubectl may be necessary; for example, to set up RBAC for Helm's Tiller component if needed
 const kubeVersion string = "v1.15.3"
@@ -50,6 +49,7 @@ type BuildInput struct {
 //		  username: "username"
 //		  password: "password"
 type MixinConfig struct {
+	Version      string `yaml:"version,omitempty"`
 	Repositories map[string]Repository
 }
 
@@ -73,6 +73,9 @@ func (m *Mixin) Build() error {
 	if err != nil {
 		return err
 	}
+
+	var helmArchiveVersion = fmt.Sprintf(helmArchiveTmpl, getHelmVersion(input.Config.Version))
+	var helmDownloadURL = fmt.Sprintf(helmDownloadURLTmpl, helmArchiveVersion)
 
 	// Define helm
 	fmt.Fprintf(m.Out, getHelm, helmDownloadURL)
@@ -115,4 +118,13 @@ func GetAddRepositoryCommand(name, url, cafile, certfile, keyfile, username, pas
 	}
 
 	return commandBuilder, nil
+}
+
+func getHelmVersion(version string) string {
+	if version != "" {
+		helmClientVersion = version
+	} else {
+		helmClientVersion = helmDefaultClientVersion
+	}
+	return helmClientVersion
 }

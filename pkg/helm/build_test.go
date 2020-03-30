@@ -2,6 +2,7 @@ package helm
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -10,6 +11,7 @@ import (
 )
 
 func TestMixin_Build(t *testing.T) {
+	const HelmDefaultClientVersion string = "v2.15.2"
 	m := NewTestMixin(t)
 
 	err := m.Build()
@@ -17,7 +19,7 @@ func TestMixin_Build(t *testing.T) {
 
 	buildOutput := `RUN apt-get update && \
  apt-get install -y curl && \
- curl -o helm.tgz https://get.helm.sh/helm-v2.15.2-linux-amd64.tar.gz && \
+ curl -o helm.tgz https://get.helm.sh/helm-%s-linux-amd64.tar.gz && \
  tar -xzf helm.tgz && \
  mv linux-amd64/helm /usr/local/bin && \
  rm helm.tgz
@@ -38,9 +40,7 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-
-		wantOutput := buildOutput + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
-
+		wantOutput := fmt.Sprintf(buildOutput, HelmDefaultClientVersion) + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
@@ -55,7 +55,24 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
+		wantOutput := fmt.Sprintf(buildOutput, HelmDefaultClientVersion)
 		gotOutput := m.TestContext.GetOutput()
-		assert.Equal(t, buildOutput, gotOutput)
+		assert.Equal(t, wantOutput, gotOutput)
+	})
+
+	t.Run("build with a defined helm client version", func(t *testing.T) {
+		var version = "v2.16.1"
+		b, err := ioutil.ReadFile("testdata/build-input-with-version.yaml")
+		require.NoError(t, err)
+
+		m := NewTestMixin(t)
+		m.Debug = false
+		m.In = bytes.NewReader(b)
+		err = m.Build()
+		require.NoError(t, err, "build failed")
+		wantOutput := fmt.Sprintf(buildOutput, version)
+		gotOutput := m.TestContext.GetOutput()
+		assert.Equal(t, wantOutput, gotOutput)
+		helmClientVersion = HelmDefaultClientVersion
 	})
 }
