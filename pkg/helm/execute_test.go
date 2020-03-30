@@ -47,9 +47,9 @@ func TestMixin_Execute(t *testing.T) {
 	os.Setenv(test.ExpectedCommandEnv, "helm status mysql -o yaml")
 
 	executeAction := Action{
-		Steps: []ExecuteSteps{
+		Steps: []ExecuteStep{
 			{
-				ExecuteStep: ExecuteStep{
+				ExecuteInstruction: ExecuteInstruction{
 					Arguments: []string{
 						"status",
 						"mysql",
