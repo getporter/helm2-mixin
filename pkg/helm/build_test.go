@@ -11,7 +11,6 @@ import (
 )
 
 func TestMixin_Build(t *testing.T) {
-	const HelmDefaultClientVersion string = "v2.15.2"
 	m := NewTestMixin(t)
 
 	err := m.Build()
@@ -40,7 +39,7 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, HelmDefaultClientVersion) + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
+		wantOutput := fmt.Sprintf(buildOutput, helmDefaultClientVersion) + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
@@ -55,7 +54,7 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, HelmDefaultClientVersion)
+		wantOutput := fmt.Sprintf(buildOutput, helmDefaultClientVersion)
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
@@ -73,6 +72,6 @@ RUN apt-get update && \
 		wantOutput := fmt.Sprintf(buildOutput, version)
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
-		helmClientVersion = HelmDefaultClientVersion
+		helmClientVersion = helmDefaultClientVersion
 	})
 }
