@@ -14,7 +14,7 @@ porter mixin install helm
 
 ### Mixin Configuration
 
-helm client version
+Helm client
 
 ```yaml
 - helm:
