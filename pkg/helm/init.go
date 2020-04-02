@@ -64,9 +64,9 @@ func (m *Mixin) Init() error {
 			return errors.Wrap(err, "unable to communicate with Tiller")
 		}
 	} else {
-		if helmClientVersion != tillerVersion {
+		if m.getHelmClientVersion() != tillerVersion {
 			fmt.Fprintf(m.Out, "Tiller version (%s) does not match client version (%s); downloading a compatible client.\n",
-				tillerVersion, helmClientVersion)
+				tillerVersion, m.getHelmClientVersion())
 
 			err := ti.installHelmClient(m, tillerVersion)
 			if err != nil {

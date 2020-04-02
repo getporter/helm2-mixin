@@ -63,7 +63,7 @@ func TestMixin_Init_MismatchedVersion(t *testing.T) {
 	require.NoError(t, err)
 
 	gotOutput := h.TestContext.GetOutput()
-	wantOutput := fmt.Sprintf("Tiller version (mismatchedVersion) does not match client version (%s); downloading a compatible client.\n", helmClientVersion)
+	wantOutput := fmt.Sprintf("Tiller version (mismatchedVersion) does not match client version (%s); downloading a compatible client.\n", h.getHelmClientVersion())
 	require.Equal(t, wantOutput, gotOutput)
 }
 
@@ -83,6 +83,6 @@ func TestMixin_Init_FailedClientInstall(t *testing.T) {
 	require.EqualError(t, err, "unable to install a compatible helm client: failed to install helm client")
 
 	gotOutput := h.TestContext.GetOutput()
-	wantOutput := fmt.Sprintf("Tiller version (mismatchedVersion) does not match client version (%s); downloading a compatible client.\n", helmClientVersion)
+	wantOutput := fmt.Sprintf("Tiller version (mismatchedVersion) does not match client version (%s); downloading a compatible client.\n", h.getHelmClientVersion())
 	require.Equal(t, wantOutput, gotOutput)
 }

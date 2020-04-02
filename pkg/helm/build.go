@@ -9,9 +9,6 @@ import (
 )
 
 // These values may be referenced elsewhere (init.go), hence consts
-var helmClientVersion string
-
-const helmDefaultClientVersion string = "v2.15.2"
 const helmArchiveTmpl string = "helm-%s-linux-amd64.tar.gz"
 const helmDownloadURLTmpl string = "https://get.helm.sh/%s"
 
@@ -73,8 +70,11 @@ func (m *Mixin) Build() error {
 	if err != nil {
 		return err
 	}
+	if input.Config.Version != "" {
+		m.setHelmClientVersion(input.Config.Version)
+	}
 
-	var helmArchiveVersion = fmt.Sprintf(helmArchiveTmpl, getHelmVersion(input.Config.Version))
+	var helmArchiveVersion = fmt.Sprintf(helmArchiveTmpl, m.getHelmClientVersion())
 	var helmDownloadURL = fmt.Sprintf(helmDownloadURLTmpl, helmArchiveVersion)
 
 	// Define helm
@@ -118,13 +118,4 @@ func GetAddRepositoryCommand(name, url, cafile, certfile, keyfile, username, pas
 	}
 
 	return commandBuilder, nil
-}
-
-func getHelmVersion(version string) string {
-	if version != "" {
-		helmClientVersion = version
-	} else {
-		helmClientVersion = helmDefaultClientVersion
-	}
-	return helmClientVersion
 }

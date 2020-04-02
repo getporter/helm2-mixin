@@ -39,7 +39,7 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, helmDefaultClientVersion) + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
+		wantOutput := fmt.Sprintf(buildOutput, m.getHelmClientVersion()) + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
@@ -54,13 +54,13 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, helmDefaultClientVersion)
+		wantOutput := fmt.Sprintf(buildOutput, m.getHelmClientVersion())
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
 
 	t.Run("build with a defined helm client version", func(t *testing.T) {
-		var version = "v2.16.1"
+
 		b, err := ioutil.ReadFile("testdata/build-input-with-version.yaml")
 		require.NoError(t, err)
 
@@ -69,9 +69,9 @@ RUN apt-get update && \
 		m.In = bytes.NewReader(b)
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, version)
+		m.setHelmClientVersion("v2.16.1")
+		wantOutput := fmt.Sprintf(buildOutput, m.getHelmClientVersion())
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
-		helmClientVersion = helmDefaultClientVersion
 	})
 }
