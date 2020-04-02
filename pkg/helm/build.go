@@ -46,8 +46,8 @@ type BuildInput struct {
 //		  username: "username"
 //		  password: "password"
 type MixinConfig struct {
-	Version      string `yaml:"version,omitempty"`
-	Repositories map[string]Repository
+	ClientVersion string `yaml:"clientVersion,omitempty"`
+	Repositories  map[string]Repository
 }
 
 type Repository struct {
@@ -70,11 +70,11 @@ func (m *Mixin) Build() error {
 	if err != nil {
 		return err
 	}
-	if input.Config.Version != "" {
-		m.setHelmClientVersion(input.Config.Version)
+	if input.Config.ClientVersion != "" {
+		m.HelmClientVersion = input.Config.ClientVersion
 	}
 
-	var helmArchiveVersion = fmt.Sprintf(helmArchiveTmpl, m.getHelmClientVersion())
+	var helmArchiveVersion = fmt.Sprintf(helmArchiveTmpl, m.HelmClientVersion)
 	var helmDownloadURL = fmt.Sprintf(helmDownloadURLTmpl, helmArchiveVersion)
 
 	// Define helm

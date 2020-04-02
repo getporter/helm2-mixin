@@ -87,13 +87,3 @@ func (m *Mixin) ValidatePayload(b []byte) error {
 func (m *Mixin) getKubernetesClient(kubeconfig string) (k8s.Interface, error) {
 	return m.ClientFactory.GetClient(kubeconfig)
 }
-
-func (m *Mixin) getHelmClientVersion() string {
-	return m.HelmClientVersion
-}
-
-func (m *Mixin) setHelmClientVersion(version string) {
-	if version != "" {
-		m.HelmClientVersion = version
-	}
-}

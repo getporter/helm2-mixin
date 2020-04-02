@@ -39,7 +39,7 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, m.getHelmClientVersion()) + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
+		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion) + "\nRUN helm repo add stable kubernetes-charts --username username --password password"
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
@@ -54,7 +54,7 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, m.getHelmClientVersion())
+		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion)
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
@@ -69,8 +69,7 @@ RUN apt-get update && \
 		m.In = bytes.NewReader(b)
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		m.setHelmClientVersion("v2.16.1")
-		wantOutput := fmt.Sprintf(buildOutput, m.getHelmClientVersion())
+		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion)
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
