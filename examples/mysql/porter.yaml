@@ -1,5 +1,9 @@
 mixins:
-- helm
+- helm:
+    clientVersion: v2.15.2
+    repositories:
+      stable:
+        url: "https://kubernetes-charts.storage.googleapis.com"
 
 name: helm-mysql
 version: 0.1.0
@@ -87,4 +91,3 @@ outputs:
       - install
       - upgrade
     sensitive: true
-
