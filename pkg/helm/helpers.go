@@ -9,6 +9,8 @@ import (
 	testclient "k8s.io/client-go/kubernetes/fake"
 )
 
+const MockHelmClientVersion string = "v2.15.2"
+
 type TestMixin struct {
 	*Mixin
 	TestContext *context.TestContext
@@ -47,7 +49,7 @@ func (t MockTillerIniter) installHelmClient(m *Mixin, version string) error {
 func NewMockTillerIniter() MockTillerIniter {
 	return MockTillerIniter{
 		GetTillerVersion: func(m *Mixin) (string, error) {
-			return helmClientVersion, nil
+			return MockHelmClientVersion, nil
 		},
 		SetupTillerRBAC: func(m *Mixin) error {
 			return nil
@@ -68,6 +70,7 @@ func NewTestMixin(t *testing.T) *TestMixin {
 	m.Context = c.Context
 	m.ClientFactory = &testKubernetesFactory{}
 	m.TillerIniter = NewMockTillerIniter()
+	m.HelmClientVersion = MockHelmClientVersion
 	return &TestMixin{
 		Mixin:       m,
 		TestContext: c,
