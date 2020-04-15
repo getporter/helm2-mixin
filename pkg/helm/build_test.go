@@ -61,7 +61,7 @@ RUN apt-get update && \
 
 	t.Run("build with a defined helm client version", func(t *testing.T) {
 
-		b, err := ioutil.ReadFile("testdata/build-input-with-version.yaml")
+		b, err := ioutil.ReadFile("testdata/build-input-with-supported-client-version.yaml")
 		require.NoError(t, err)
 
 		m := NewTestMixin(t)
@@ -72,5 +72,29 @@ RUN apt-get update && \
 		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion)
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
+	})
+
+	t.Run("build with a defined helm client version that does not meet the semver constraint", func(t *testing.T) {
+
+		b, err := ioutil.ReadFile("testdata/build-input-with-unsupported-client-version.yaml")
+		require.NoError(t, err)
+
+		m := NewTestMixin(t)
+		m.Debug = false
+		m.In = bytes.NewReader(b)
+		err = m.Build()
+		require.EqualError(t, err, `supplied clientVersion "v3.2.1" does not meet semver constraint "^v2.x"`)
+	})
+
+	t.Run("build with a defined helm client version that does not parse as valid semver", func(t *testing.T) {
+
+		b, err := ioutil.ReadFile("testdata/build-input-with-invalid-client-version.yaml")
+		require.NoError(t, err)
+
+		m := NewTestMixin(t)
+		m.Debug = false
+		m.In = bytes.NewReader(b)
+		err = m.Build()
+		require.EqualError(t, err, `supplied client version "v3.2.1.0" cannot be parsed as semver: Invalid Semantic Version`)
 	})
 }

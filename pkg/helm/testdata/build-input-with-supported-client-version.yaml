@@ -1,5 +1,5 @@
 config:
-  version: v2.16.1
+  clientVersion: v2.16.1
 install:
   - helm:
       description: "Install MySQL"
