@@ -7,7 +7,7 @@ project.
 
 [porter]: https://github.com/deislabs/porter
 [new-contrib]: https://porter.sh/contribute
-[contrib]: https://github.com/deislabs/porter/blob/master/CONTRIBUTING.md
+[contrib]: https://github.com/deislabs/porter/blob/main/CONTRIBUTING.md
 
 ---
 
