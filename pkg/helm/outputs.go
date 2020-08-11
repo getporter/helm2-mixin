@@ -42,33 +42,37 @@ func (m *Mixin) getOutput(resourceType, resourceName, namespace, jsonPath string
 }
 
 func (m *Mixin) handleOutputs(client kubernetes.Interface, outputs []HelmOutput) error {
+	var outputError error
 	//Now get the outputs
 	for _, output := range outputs {
 
-		val, err := getSecret(client, output.Namespace, output.Secret, output.Key)
-		if err != nil {
-			return err
+		if output.Secret != "" && output.Key != "" {
+			val, err := getSecret(client, output.Namespace, output.Secret, output.Key)
+
+			if err != nil {
+				return err
+			}
+
+			outputError = m.Context.WriteMixinOutputToFile(output.Name, val)
 		}
 
-		err = m.Context.WriteMixinOutputToFile(output.Name, val)
-		if err != nil {
-			return err
+		if output.ResourceType != "" && output.ResourceName != "" && output.JSONPath != "" {
+			bytes, err := m.getOutput(
+				output.ResourceType,
+				output.ResourceName,
+				output.Namespace,
+				output.JSONPath,
+			)
+			if err != nil {
+				return err
+			}
+
+			outputError = m.Context.WriteMixinOutputToFile(output.Name, bytes)
+
 		}
 
-		bytes, err := m.getOutput(
-			output.ResourceType,
-			output.ResourceName,
-			output.Namespace,
-			output.JSONPath,
-		)
-		if err != nil {
-			return err
-		}
-
-		err = m.Context.WriteMixinOutputToFile(output.Name, bytes)
-
-		if err != nil {
-			return errors.Wrapf(err, "unable to write output '%s'", output.Name)
+		if outputError != nil {
+			return errors.Wrapf(outputError, "unable to write output '%s'", output.Name)
 		}
 	}
 	return nil
