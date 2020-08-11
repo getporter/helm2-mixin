@@ -6,7 +6,11 @@ type Step struct {
 }
 
 type HelmOutput struct {
-	Name   string `yaml:"name"`
-	Secret string `yaml:"secret"`
-	Key    string `yaml:"key"`
+	Name         string `yaml:"name"`
+	Secret       string `yaml:"secret,omitempty"`
+	Key          string `yaml:"key,omitempty"`
+	ResourceType string `yaml:"resourceType,omitempty"`
+	ResourceName string `yaml:"resourceName,omitempty"`
+	Namespace    string `yaml:"namespace,omitempty"`
+	JSONPath     string `yaml:"jsonPath,omitempty"`
 }
