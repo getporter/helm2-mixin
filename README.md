@@ -96,7 +96,7 @@ outputs:
       key: SECRET_KEY
 ```
 
-The mixin supports extracting resource metadata from Kuberentes as outputs.
+The mixin also supports extracting resource metadata from Kubernetes as outputs.
 
 ```yaml
 outputs:
