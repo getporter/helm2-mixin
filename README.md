@@ -96,6 +96,17 @@ outputs:
       key: SECRET_KEY
 ```
 
+The mixin also supports extracting resource metadata from Kubernetes as outputs.
+
+```yaml
+outputs:
+    - name: NAME
+      resourceType: RESOURCE_TYPE
+      resourceName: RESOURCE_TYPE_NAME
+      namespace: NAMESPACE
+      jsonPath: JSON_PATH_DEFINITION
+```
+
 ### Examples
 
 Install
@@ -119,6 +130,11 @@ install:
       - name: mysql-password
         secret: mydb-mysql
         key: mysql-password
+      - name: mysql-cluster-ip
+        resourceType: service
+        resourceName: porter-ci-mysql-service
+        namespace: "default"
+        jsonPath: "{.spec.clusterIP}"
 ```
 
 Upgrade

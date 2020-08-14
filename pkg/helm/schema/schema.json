@@ -176,10 +176,22 @@
           },
           "key": {
             "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "resourceType": {
+            "type": "string"
+          },
+          "resourceName": {
+            "type": "string"
+          },
+          "jsonPath": {
+            "type": "string"
           }
         },
         "additionalProperties": false,
-        "required": ["name", "secret", "key"]
+        "required": ["name"]
       }
     },
     "helm": {

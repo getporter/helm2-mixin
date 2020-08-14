@@ -35,7 +35,8 @@ func TestMixin_UnmarshalInstallStep(t *testing.T) {
 
 	assert.Equal(t, "Install MySQL", step.Description)
 	assert.NotEmpty(t, step.Outputs)
-	assert.Equal(t, HelmOutput{"mysql-root-password", "porter-ci-mysql", "mysql-root-password"}, step.Outputs[0])
+	assert.Equal(t, HelmOutput{"mysql-root-password", "porter-ci-mysql", "mysql-root-password", "", "", "", ""}, step.Outputs[0])
+	assert.Equal(t, HelmOutput{"mysql-cluster-ip", "", "", "service", "porter-ci-mysql-service", "default", "{.spec.clusterIP}"}, step.Outputs[2])
 
 	assert.Equal(t, "porter-ci-mysql", step.Name)
 	assert.Equal(t, "stable/mysql", step.Chart)

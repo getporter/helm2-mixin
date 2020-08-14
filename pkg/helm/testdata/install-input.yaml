@@ -17,3 +17,8 @@ install:
       - name: mysql-password
         secret: porter-ci-mysql
         key: mysql-password
+      - name: mysql-cluster-ip
+        resourceType: service
+        resourceName: porter-ci-mysql-service
+        namespace: "default"
+        jsonPath: "{.spec.clusterIP}"
