@@ -41,13 +41,18 @@ func (m *Mixin) getOutput(resourceType, resourceName, namespace, jsonPath string
 	return out, nil
 }
 
-func (m *Mixin) handleOutputs(client kubernetes.Interface, outputs []HelmOutput) error {
+func (m *Mixin) handleOutputs(client kubernetes.Interface, namespace string, outputs []HelmOutput) error {
 	var outputError error
 	//Now get the outputs
 	for _, output := range outputs {
 
 		if output.Secret != "" && output.Key != "" {
-			val, err := getSecret(client, output.Namespace, output.Secret, output.Key)
+			// Override namespace if output.Namespace is set
+			if output.Namespace != "" {
+				namespace = output.Namespace
+			}
+
+			val, err := getSecret(client, namespace, output.Secret, output.Key)
 
 			if err != nil {
 				return err
