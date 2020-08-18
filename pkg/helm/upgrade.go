@@ -112,6 +112,6 @@ func (m *Mixin) Upgrade() error {
 		return err
 	}
 
-	err = m.handleOutputs(kubeClient, step.Outputs)
+	err = m.handleOutputs(kubeClient, step.Namespace, step.Outputs)
 	return err
 }
