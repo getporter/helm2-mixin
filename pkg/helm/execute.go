@@ -35,6 +35,6 @@ func (m *Mixin) Execute() error {
 		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
-	err = m.handleOutputs(kubeClient, step.Outputs)
+	err = m.handleOutputs(kubeClient, step.Namespace, step.Outputs)
 	return err
 }
