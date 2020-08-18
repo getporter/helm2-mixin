@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	get.porter.sh/porter v0.25.0-beta.1
+	github.com/Masterminds/semver v1.5.0
 	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/ghodss/yaml v1.0.0
 	github.com/gobuffalo/packr/v2 v2.7.1
