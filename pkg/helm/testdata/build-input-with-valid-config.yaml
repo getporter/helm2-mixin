@@ -2,8 +2,6 @@ config:
   repositories:
     stable:
       url: "kubernetes-charts"
-      username: "username"
-      password: "password"
 install:
   - helm:
       description: "Install MySQL"
