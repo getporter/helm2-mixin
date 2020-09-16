@@ -2,7 +2,7 @@
 
 <img src="https://porter.sh/images/mixins/helm.svg" align="right" width="150px"/>
 
-This is a Helm mixin for [Porter](https://github.com/deislabs/porter). It executes the
+This is a Helm mixin for [Porter](https://github.com/getporter/porter). It executes the
 appropriate helm command based on which action it is included within: `install`,
 `upgrade`, or `delete`.
 

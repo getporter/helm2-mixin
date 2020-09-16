@@ -5,9 +5,9 @@ check out our [New Contributor Guide][new-contrib]. The Porter [Contributing
 Guide][contrib] also has lots of information about how to interact with the
 project.
 
-[porter]: https://github.com/deislabs/porter
+[porter]: https://github.com/getporter/porter
 [new-contrib]: https://porter.sh/contribute
-[contrib]: https://github.com/deislabs/porter/blob/main/CONTRIBUTING.md
+[contrib]: https://porter.sh/src/CONTRIBUTING.md
 
 ---
 
