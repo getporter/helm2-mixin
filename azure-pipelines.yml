@@ -25,13 +25,6 @@ steps:
     echo "##vso[task.prependpath]/home/vsts/go/bin/"
   displayName: 'Configure Go'
 
-- task: Docker@1
-  displayName: Login
-  inputs:
-    containerRegistryType: Container Registry
-    dockerRegistryEndpoint: deislabs-registry
-    command: login
-
 - script: |
     make build test-unit
   displayName: 'Unit Test'
