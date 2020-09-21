@@ -27,7 +27,7 @@ func getSecret(client kubernetes.Interface, namespace, name, key string) ([]byte
 
 func (m *Mixin) getOutput(resourceType, resourceName, namespace, jsonPath string) ([]byte, error) {
 	args := []string{"get", resourceType, resourceName}
-	args = append(args, fmt.Sprintf("-o=jsonpath='%s'", jsonPath))
+	args = append(args, fmt.Sprintf("-o=jsonpath=%s", jsonPath))
 	if namespace != "" {
 		args = append(args, fmt.Sprintf("--namespace=%s", namespace))
 	}
