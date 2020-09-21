@@ -1,5 +1,7 @@
 # Helm Mixin for Porter
 
+[![Build Status](https://dev.azure.com/getporter/porter/_apis/build/status/helm-mixin?branchName=main)](https://dev.azure.com/getporter/porter/_build/latest?definitionId=11&branchName=main)
+
 <img src="https://porter.sh/images/mixins/helm.svg" align="right" width="150px"/>
 
 This is a Helm mixin for [Porter](https://github.com/getporter/porter). It executes the
