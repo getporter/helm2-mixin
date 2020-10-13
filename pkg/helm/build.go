@@ -2,6 +2,7 @@ package helm
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"get.porter.sh/porter/pkg/exec/builder"
@@ -90,21 +91,32 @@ func (m *Mixin) Build() error {
 	// Define kubectl
 	fmt.Fprintf(m.Out, getKubectl, kubeVersion)
 
-	// Go through repositories
-	for name, repo := range input.Config.Repositories {
-
-		commandValue, err := GetAddRepositoryCommand(name, repo.URL)
-		if err != nil && m.Debug {
-			fmt.Fprintf(m.Err, "DEBUG: addition of repository failed: %s\n", err.Error())
-		} else {
-			fmt.Fprintf(m.Out, strings.Join(commandValue, " "))
+	// Go through repositories if defined
+	if len(input.Config.Repositories) > 0 {
+		names := make([]string, 0, len(input.Config.Repositories))
+		for name := range input.Config.Repositories {
+			names = append(names, name)
 		}
+		sort.Strings(names) //sort by key we need it for the tests
+		// Add the repositories
+		for _, name := range names {
+			url := input.Config.Repositories[name].URL
+			repositoryCommand, err := getRepositoryCommand(name, url)
+			if err != nil && m.Debug {
+				fmt.Fprintf(m.Err, "DEBUG: addition of repository failed: %s\n", err.Error())
+			} else {
+				fmt.Fprintf(m.Out, strings.Join(repositoryCommand, " "))
+			}
+		}
+		// Make sure we update the helm repositories
+		// So we don\'t have to do it at runtime
+		fmt.Fprintf(m.Out, "\nRUN helm repo update")
 	}
 
 	return nil
 }
 
-func GetAddRepositoryCommand(name, url string) (commandValue []string, err error) {
+func getRepositoryCommand(name, url string) (repositoryCommand []string, err error) {
 
 	var commandBuilder []string
 
