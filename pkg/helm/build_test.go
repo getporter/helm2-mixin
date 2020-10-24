@@ -56,14 +56,12 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-
-		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion) +
-			"\nRUN helm repo add harbor https://helm.getharbor.io" +
-			"\nRUN helm repo add jetstack https://charts.jetstack.io" +
-			"\nRUN helm repo add stable kubernetes-charts" +
-			"\nRUN helm repo update"
 		gotOutput := m.TestContext.GetOutput()
-		assert.Equal(t, wantOutput, gotOutput)
+		assert.Contains(t, gotOutput, fmt.Sprintf(buildOutput, m.HelmClientVersion))
+		assert.Contains(t, gotOutput, "RUN helm repo add harbor https://helm.getharbor.io")
+		assert.Contains(t, gotOutput, "RUN helm repo add jetstack https://charts.jetstack.io")
+		assert.Contains(t, gotOutput, "RUN helm repo add stable kubernetes-charts")
+		assert.Contains(t, gotOutput, "RUN helm repo update")
 	})
 
 	t.Run("build with invalid config", func(t *testing.T) {
