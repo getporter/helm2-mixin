@@ -39,13 +39,15 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion) + "\nRUN helm repo add stable kubernetes-charts"
+		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion) +
+			"\nRUN helm repo add stable kubernetes-charts" +
+			"\nRUN helm repo update"
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})
 
-	t.Run("build with invalid config", func(t *testing.T) {
-		b, err := ioutil.ReadFile("testdata/build-input-with-invalid-config.yaml")
+	t.Run("build with a valid config and multiple repositories", func(t *testing.T) {
+		b, err := ioutil.ReadFile("testdata/build-input-with-valid-config-multi-repos.yaml")
 		require.NoError(t, err)
 
 		m := NewTestMixin(t)
@@ -54,7 +56,26 @@ RUN apt-get update && \
 
 		err = m.Build()
 		require.NoError(t, err, "build failed")
-		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion)
+		gotOutput := m.TestContext.GetOutput()
+		assert.Contains(t, gotOutput, fmt.Sprintf(buildOutput, m.HelmClientVersion))
+		assert.Contains(t, gotOutput, "RUN helm repo add harbor https://helm.getharbor.io")
+		assert.Contains(t, gotOutput, "RUN helm repo add jetstack https://charts.jetstack.io")
+		assert.Contains(t, gotOutput, "RUN helm repo add stable kubernetes-charts")
+		assert.Contains(t, gotOutput, "RUN helm repo update")
+	})
+
+	t.Run("build with invalid config", func(t *testing.T) {
+		b, err := ioutil.ReadFile("testdata/build-input-with-invalid-config-url.yaml")
+		require.NoError(t, err)
+
+		m := NewTestMixin(t)
+		m.Debug = false
+		m.In = bytes.NewReader(b)
+
+		err = m.Build()
+		require.NoError(t, err, "build failed")
+		wantOutput := fmt.Sprintf(buildOutput, m.HelmClientVersion) +
+			"\nRUN helm repo update"
 		gotOutput := m.TestContext.GetOutput()
 		assert.Equal(t, wantOutput, gotOutput)
 	})

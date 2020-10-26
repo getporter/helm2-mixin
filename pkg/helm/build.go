@@ -90,21 +90,27 @@ func (m *Mixin) Build() error {
 	// Define kubectl
 	fmt.Fprintf(m.Out, getKubectl, kubeVersion)
 
-	// Go through repositories
-	for name, repo := range input.Config.Repositories {
-
-		commandValue, err := GetAddRepositoryCommand(name, repo.URL)
-		if err != nil && m.Debug {
-			fmt.Fprintf(m.Err, "DEBUG: addition of repository failed: %s\n", err.Error())
-		} else {
-			fmt.Fprintf(m.Out, strings.Join(commandValue, " "))
+	// Go through repositories if defined
+	if len(input.Config.Repositories) > 0 {
+		// Add the repositories
+		for name, repo := range input.Config.Repositories {
+			url := repo.URL
+			repositoryCommand, err := getRepositoryCommand(name, url)
+			if err != nil && m.Debug {
+				fmt.Fprintf(m.Err, "DEBUG: addition of repository failed: %s\n", err.Error())
+			} else {
+				fmt.Fprintf(m.Out, strings.Join(repositoryCommand, " "))
+			}
 		}
+		// Make sure we update the helm repositories
+		// So we don't have to do it at runtime
+		fmt.Fprintf(m.Out, "\nRUN helm repo update")
 	}
 
 	return nil
 }
 
-func GetAddRepositoryCommand(name, url string) (commandValue []string, err error) {
+func getRepositoryCommand(name, url string) (repositoryCommand []string, err error) {
 
 	var commandBuilder []string
 

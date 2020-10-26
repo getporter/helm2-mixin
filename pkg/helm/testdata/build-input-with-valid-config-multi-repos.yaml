@@ -1,0 +1,13 @@
+config:
+  repositories:
+    stable:
+      url: "kubernetes-charts"
+    jetstack:
+      url: "https://charts.jetstack.io"
+    harbor:
+      url: "https://helm.getharbor.io"
+install:
+  - helm:
+      description: "Install MySQL"
+      chart: stable/mysql
+      version: 0.10.2
