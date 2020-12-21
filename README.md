@@ -29,7 +29,7 @@ Repositories
 - helm:
     repositories:
       stable:
-        url: "https://kubernetes-charts.storage.googleapis.com"
+        url: "https://charts.helm.sh/stable
 ```
 
 ### Mixin Syntax
