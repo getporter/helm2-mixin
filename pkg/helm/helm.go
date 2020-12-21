@@ -16,7 +16,7 @@ import (
 	k8s "k8s.io/client-go/kubernetes"
 )
 
-const defaultHelmClientVersion string = "v2.15.2"
+const defaultHelmClientVersion string = "v2.17.0"
 
 // Helm is the logic behind the helm mixin
 type Mixin struct {

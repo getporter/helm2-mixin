@@ -45,7 +45,7 @@ type BuildInput struct {
 // - helm:
 //	  repositories:
 //	    stable:
-//		  url: "https://kubernetes-charts.storage.googleapis.com"
+//		  url: "https://charts.helm.sh/stable"
 
 type MixinConfig struct {
 	ClientVersion string `yaml:"clientVersion,omitempty"`
