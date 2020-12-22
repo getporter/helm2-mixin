@@ -1,7 +1,7 @@
 package helm
 
 import (
-	"get.porter.sh/mixin/helm/pkg"
+	"get.porter.sh/mixin/helm2/pkg"
 	"get.porter.sh/porter/pkg/mixin"
 	"get.porter.sh/porter/pkg/pkgmgmt"
 	"get.porter.sh/porter/pkg/porter/version"

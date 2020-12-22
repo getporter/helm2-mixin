@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"get.porter.sh/mixin/helm/pkg/helm"
+	"get.porter.sh/mixin/helm2/pkg/helm"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +20,7 @@ func buildRootCommand(in io.Reader) *cobra.Command {
 	m.In = in
 	cmd := &cobra.Command{
 		Use:  "helm",
-		Long: "A helm mixin for porter 👩🏽‍✈️",
+		Long: "A helm v2 mixin for porter️",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			// Enable swapping out stdout/stderr for testing
 			m.Out = cmd.OutOrStdout()
