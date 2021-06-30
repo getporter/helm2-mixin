@@ -1,5 +1,5 @@
 /bin
-/helm
+/helm2
 *-packr.go
 /build/git_askpass.sh
 .vscode/launch.json

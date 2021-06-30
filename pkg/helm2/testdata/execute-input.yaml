@@ -1,0 +1,12 @@
+status:
+  - helm2:
+      description: "MySQL Status"
+      arguments:
+        - status
+        - mysql
+      flags:
+        o: yaml
+      outputs:
+        - name: mysql-root-password
+          secret: porter-ci-mysql
+          key: mysql-root-password

@@ -1,0 +1,26 @@
+upgrade:
+- helm2:
+    description: "Upgrade MySQL"
+    name: porter-ci-mysql
+    chart: stable/mysql
+    version: 0.10.2
+    wait: true
+    resetValues: true
+    reuseValues: false
+    set:
+      mysqlDatabase: mydb
+      mysqlUser: myuser
+      livenessProbe.initialDelaySeconds: 30
+      persistence.enabled: true
+    outputs:
+      - name: mysql-root-password
+        secret: porter-ci-mysql
+        key: mysql-root-password
+      - name: mysql-password
+        secret: porter-ci-mysql
+        key: mysql-password
+      - name: mysql-cluster-ip
+        resourceType: service
+        resourceName: porter-ci-mysql-service
+        namespace: "default"
+        jsonPath: "{.spec.clusterIP}"

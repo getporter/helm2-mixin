@@ -1,4 +1,4 @@
-MIXIN = helm
+MIXIN = helm2
 PKG = get.porter.sh/mixin/$(MIXIN)
 SHELL = bash
 
@@ -82,12 +82,12 @@ bin/porter$(FILE_EXT):
 	chmod +x bin/porter$(FILE_EXT)
 
 install:
-	mkdir -p $(PORTER_HOME)/mixins/$(MIXIN)
+	mkdir -p $(PORTER_HOME)/mixins/$(MIXIN)/runtimes
 	install $(BINDIR)/$(MIXIN)$(FILE_EXT) $(PORTER_HOME)/mixins/$(MIXIN)/$(MIXIN)$(FILE_EXT)
-	install $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) $(PORTER_HOME)/mixins/$(MIXIN)/$(MIXIN)-runtime$(FILE_EXT)
+	install $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) $(PORTER_HOME)/mixins/$(MIXIN)/runtimes/$(MIXIN)-runtime$(FILE_EXT)
 
 clean: clean-packr
 	-rm -fr bin/
 
 clean-packr: packr2
-	cd pkg/helm && packr2 clean
+	cd pkg/helm2 && packr2 clean
