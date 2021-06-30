@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"get.porter.sh/mixin/helm/pkg/kubernetes"
+	"get.porter.sh/mixin/helm2/pkg/kubernetes"
 	"get.porter.sh/porter/pkg/context"
 	"github.com/ghodss/yaml" // We are not using go-yaml because of serialization problems with jsonschema, don't use this library elsewhere
 	"github.com/gobuffalo/packr/v2"

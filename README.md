@@ -1,29 +1,34 @@
-# Helm Mixin for Porter
+# Helm v2 Mixin for Porter
 
-[![Build Status](https://dev.azure.com/getporter/porter/_apis/build/status/helm-mixin?branchName=main)](https://dev.azure.com/getporter/porter/_build/latest?definitionId=11&branchName=main)
+[![Build Status](https://dev.azure.com/getporter/porter/_apis/build/status/helm2-mixin?branchName=main)](https://dev.azure.com/getporter/porter/_build/latest?definitionId=11&branchName=main)
 
 <img src="https://porter.sh/images/mixins/helm.svg" align="right" width="150px"/>
 
-This is a Helm mixin for [Porter](https://github.com/getporter/porter). It executes the
-appropriate helm command based on which action it is included within: `install`,
-`upgrade`, or `delete`.
+This is a Helm v2 mixin for [Porter](https://github.com/getporter/porter). It
+executes the appropriate helm command based on which action it is included
+within: `install`, `upgrade`, or `delete`.
+
+🚨 [Helm v2 is deprecated](https://helm.sh/blog/helm-2-becomes-unsupported/) so
+you should move to Helm v3 as soon as possible. After you [migrate to Helm
+3](https://helm.sh/docs/topics/v2_v3_migration/), use the [Helm 3
+mixin](https://github.com/MChorfa/porter-helm3). 🚀
 
 ### Install or Upgrade
 
 ```shell
-porter mixin install helm
+porter mixin install helm2
 ```
 
 ### Mixin Configuration
 
-Helm client
+Helm client version
 
 ```yaml
 - helm:
-    clientVersion: v2.15.2
+    clientVersion: v2.17.0
 ```
 
-Repositories
+Add repositories
 
 ```yaml
 - helm:

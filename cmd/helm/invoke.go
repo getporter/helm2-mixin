@@ -1,9 +1,8 @@
 package main
 
 import (
+	"get.porter.sh/mixin/helm2/pkg/helm"
 	"github.com/spf13/cobra"
-
-	"get.porter.sh/mixin/helm/pkg/helm"
 )
 
 func buildInvokeCommand(mixin *helm.Mixin) *cobra.Command {

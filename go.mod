@@ -1,4 +1,4 @@
-module get.porter.sh/mixin/helm
+module get.porter.sh/mixin/helm2
 
 go 1.13
 
