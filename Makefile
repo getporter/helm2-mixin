@@ -1,4 +1,4 @@
-MIXIN = helm
+MIXIN = helm2
 PKG = get.porter.sh/mixin/$(MIXIN)
 SHELL = bash
 
@@ -43,13 +43,12 @@ build-client: generate
 	$(GO) build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
 
 generate: packr2
-	$(GO) mod tidy
 	$(GO) generate ./...
 
 HAS_PACKR2 := $(shell command -v packr2)
 packr2:
 ifndef HAS_PACKR2
-	$(GO) get -u github.com/gobuffalo/packr/v2/packr2
+	cd /tmp && $(GO) get github.com/gobuffalo/packr/v2/packr2@v2.6.0
 endif
 
 xbuild-all: generate
@@ -82,12 +81,12 @@ bin/porter$(FILE_EXT):
 	chmod +x bin/porter$(FILE_EXT)
 
 install:
-	mkdir -p $(PORTER_HOME)/mixins/$(MIXIN)
+	mkdir -p $(PORTER_HOME)/mixins/$(MIXIN)/runtimes
 	install $(BINDIR)/$(MIXIN)$(FILE_EXT) $(PORTER_HOME)/mixins/$(MIXIN)/$(MIXIN)$(FILE_EXT)
-	install $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) $(PORTER_HOME)/mixins/$(MIXIN)/$(MIXIN)-runtime$(FILE_EXT)
+	install $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) $(PORTER_HOME)/mixins/$(MIXIN)/runtimes/$(MIXIN)-runtime$(FILE_EXT)
 
 clean: clean-packr
 	-rm -fr bin/
 
 clean-packr: packr2
-	cd pkg/helm && packr2 clean
+	cd pkg/helm2 && packr2 clean

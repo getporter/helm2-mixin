@@ -1,3 +1,0 @@
-uninstall:
-- helm:
-    description: "Status MySQL"

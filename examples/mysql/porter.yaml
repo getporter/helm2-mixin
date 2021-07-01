@@ -1,5 +1,5 @@
 mixins:
-- helm:
+- helm2:
     clientVersion: v2.17.0
     repositories:
       stable:
@@ -7,7 +7,7 @@ mixins:
 
 name: helm-mysql
 version: 0.1.0
-tag: getporter/helm-mysql:v0.1.0
+registry: getporter
 
 credentials:
 - name: kubeconfig
@@ -34,7 +34,7 @@ customActions:
     stateless: true
 
 install:
-  - helm:
+  - helm2:
       description: "Install MySQL"
       name: "{{ bundle.parameters.mysql-name }}"
       chart: stable/mysql
@@ -53,7 +53,7 @@ install:
         key: mysql-password
 
 status:
-  - helm:
+  - helm2:
       description: "MySQL Status"
       arguments:
         - status
@@ -62,7 +62,7 @@ status:
         o: yaml
 
 upgrade:
-  - helm:
+  - helm2:
       description: "Upgrade MySQL"
       name: "{{ bundle.parameters.mysql-name }}"
       namespace: "{{ bundle.parameters.namespace }}"
@@ -77,7 +77,7 @@ upgrade:
         key: mysql-password
 
 uninstall:
-  - helm:
+  - helm2:
       description: "Uninstall MySQL"
       purge: true
       releases:

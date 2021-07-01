@@ -1,0 +1,5 @@
+install:
+- helm2:
+    name: wordpress
+    chart: stable/wordpress
+    description: ""

@@ -24,14 +24,14 @@ porter mixin install helm2
 Helm client version
 
 ```yaml
-- helm:
+- helm2:
     clientVersion: v2.17.0
 ```
 
 Add repositories
 
 ```yaml
-- helm:
+- helm2:
     repositories:
       stable:
         url: "https://charts.helm.sh/stable
@@ -43,7 +43,7 @@ Install
 
 ```yaml
 install:
-- helm:
+- helm2:
     description: "Description of the command"
     name: RELEASE_NAME
     chart: STABLE_CHART_NAME
@@ -61,7 +61,7 @@ Upgrade
 
 ```yaml
 install:
-- helm:
+- helm2:
     description: "Description of the command"
     name: RELEASE_NAME
     chart: STABLE_CHART_NAME
@@ -79,7 +79,7 @@ Uninstall
 
 ```yaml
 uninstall:
-- helm:
+- helm2:
     description: "Description of command"
     purge: BOOL
     releases:
@@ -115,7 +115,7 @@ Install
 
 ```yaml
 install:
-- helm:
+- helm2:
     description: "Install MySQL"
     name: mydb
     chart: stable/mysql
@@ -143,7 +143,7 @@ Upgrade
 
 ```yaml
 upgrade:
-- helm:
+- helm2:
     description: "Upgrade MySQL"
     name: porter-ci-mysql
     chart: stable/mysql
@@ -162,7 +162,7 @@ Uninstall
 
 ```yaml
 uninstall:
-- helm:
+- helm2:
     description: "Uninstall MySQL"
     purge: true
     releases:
