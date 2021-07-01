@@ -43,13 +43,12 @@ build-client: generate
 	$(GO) build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
 
 generate: packr2
-	$(GO) mod tidy
 	$(GO) generate ./...
 
 HAS_PACKR2 := $(shell command -v packr2)
 packr2:
 ifndef HAS_PACKR2
-	$(GO) get github.com/gobuffalo/packr/v2/packr2@v2.6.0
+	cd /tmp && $(GO) get github.com/gobuffalo/packr/v2/packr2@v2.6.0
 endif
 
 xbuild-all: generate
